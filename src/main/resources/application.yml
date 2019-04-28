@@ -1,8 +1,8 @@
 spring:
     mvc:
         view: # 视图相关
-        prefix: /templates/
-        suffix: .html
+            prefix: /templates/
+            suffix: .html
     output:
         ansi:
         enabled: ALWAYS # 输出带颜色的日志信息
