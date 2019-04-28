@@ -17,7 +17,7 @@ import tech.wetech.admin.modules.system.po.Test;
  * QQ:873689
  * @date 2019-4-28 12:02:51
  */
-@Repository
-public interface TestDao extends  JpaRepository<Test,String>{
+@Repository(value = "sdsd")
+public interface TesttestDao extends  JpaRepository<Test,String>{
 
 }

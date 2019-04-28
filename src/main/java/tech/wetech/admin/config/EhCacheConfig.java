@@ -20,12 +20,12 @@ public class EhCacheConfig {
      *
      * @return
      */
-    @Bean
-    public SpringCacheManagerWrapper cacheManager(EhCacheCacheManager springCacheManager) {
-        SpringCacheManagerWrapper cacheManager = new SpringCacheManagerWrapper();
-        cacheManager.setCacheManager(springCacheManager);
-        return cacheManager;
-    }
+//    @Bean
+//    public SpringCacheManagerWrapper cacheManager(EhCacheCacheManager springCacheManager) {
+//        SpringCacheManagerWrapper cacheManager = new SpringCacheManagerWrapper();
+//        cacheManager.setCacheManager(springCacheManager);
+//        return cacheManager;
+//    }
 
 
     /**

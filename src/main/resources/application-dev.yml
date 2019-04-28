@@ -73,7 +73,6 @@ spring:
             #none 则不进行任何操作
             ddl-auto: update
         show-sql: true
-      
-
+        
     thymeleaf:
         cache: false
