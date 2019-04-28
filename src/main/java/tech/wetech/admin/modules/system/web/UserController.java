@@ -58,6 +58,12 @@ public class UserController extends BaseCrudController<User> {
         return "system/user";
     }
 
+    
+    @GetMapping("/test")
+    public String queryList() {
+        return "sdas";
+    }
+    
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("user:view")

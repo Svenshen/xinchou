@@ -35,6 +35,7 @@ public class GroupController extends BaseCrudController<Group> {
     @SystemLog("用户管理创建用户组")
     @Override
     public Result create(@Validated Group group) {
+        
         groupService.create(group);
         return Result.success();
     }
