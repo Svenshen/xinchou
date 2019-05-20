@@ -22,6 +22,14 @@ public interface UserService extends IService<User> {
     void changePassword(Long userId, String newPassword);
 
     /**
+     * 修改密码
+     * @param username
+     * @param password
+     * @param cpassword
+     */
+    void changePassword(String username, String password,String cpassword);
+    
+    /**
      * 根据用户名查找其角色
      * @param username
      * @return

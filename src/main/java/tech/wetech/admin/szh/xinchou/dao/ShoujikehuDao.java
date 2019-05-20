@@ -5,19 +5,19 @@
  * @autoor szh
  */
 
-package tech.wetech.admin.modules.system.mapper;
+package tech.wetech.admin.szh.xinchou.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tech.wetech.admin.modules.system.po.Test;
+import tech.wetech.admin.szh.xinchou.domain.Shoujikehu;
 
 /**
  *
  * @author  szh
  * QQ:873689
- * @date 2019-4-28 12:02:51
+ * @date 2019-5-16 16:41:59
  */
-@Repository(value = "sdsd")
-public interface TesttestDao extends  JpaRepository<Test,String>{
+@Repository
+public interface ShoujikehuDao extends  JpaRepository<Shoujikehu,String>{
 
 }

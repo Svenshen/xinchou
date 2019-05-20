@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import org.apache.shiro.subject.Subject;
+import tech.wetech.admin.core.exception.BizException;
 
 /**
  * @author cjbi
@@ -59,10 +61,7 @@ public class UserController extends BaseCrudController<User> {
     }
 
     
-    @GetMapping("/test")
-    public String queryList() {
-        return "sdas";
-    }
+   
     
     @ResponseBody
     @GetMapping("/list")
@@ -175,6 +174,20 @@ public class UserController extends BaseCrudController<User> {
     @SystemLog("用户管理更改用户密码")
     public Result changePassword(@PathVariable("id") Long id, String newPassword) {
         userService.changePassword(id, newPassword);
+        return Result.success();
+    }
+    
+    @GetMapping("/updatepassword")
+    public String updatepasswordPage(Model model) {
+        return "system/updatepassword";
+    }
+    
+    @ResponseBody
+    @PostMapping("/updatepassword")
+    public Result updatepasswordPassword(String password,String cpassword) {
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String)subject.getPrincipal();
+        userService.changePassword(username, password,cpassword);
         return Result.success();
     }
 

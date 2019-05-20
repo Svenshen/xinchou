@@ -51,6 +51,7 @@ public class OrganizationController extends BaseCrudController<Organization> {
     @PostMapping("/create")
     @Override
     public Result create(@Validated Organization organization) {
+        
         organizationService.createOrganization(organization);
         return Result.success();
     }

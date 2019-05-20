@@ -27,7 +27,7 @@ public class ResourceServiceImpl extends BaseService<Resource> implements Resour
     @Override
     @Transactional
     public void createResource(Resource resource) {
-        Resource parent = resourceMapper.selectOne(new Resource().setParentId(resource.getParentId()));
+        Resource parent = resourceMapper.selectOne(new Resource().setId(resource.getParentId()));
         resource.setParentIds(parent.makeSelfAsParentIds());
         resource.setAvailable(true);
         if (resource.getType() == ResourceType.MENU) {

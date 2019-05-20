@@ -299,6 +299,7 @@
         var $form = $(this),
             _url = opts.url,
             _data = (opts.data || $form.serialize()),
+            //_data = (opts.data ||  new FormData($form)),
             _dataType = (opts.dataType || 'json');
         if ($form.isFormValid($(this))) {
             $.ajax({

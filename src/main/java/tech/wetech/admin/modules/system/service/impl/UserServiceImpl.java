@@ -71,4 +71,15 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
                 Arrays.asList(user.getRoleIds().split(",")).stream().map(Long::valueOf).collect(Collectors.toList()).toArray(new Long[0])
         );
     }
+
+    @Override
+    public void changePassword(String username, String password, String cpassword) {
+        if(!password.equals(cpassword)){
+            throw new BizException(ResultCodeEnum.FAILED_USER_PASSWORD);
+        }
+        User user = userMapper.selectOne(new User().setUsername(username));
+        user.setPassword(password);
+        passwordHelper.encryptPassword(user);
+        userMapper.updateByPrimaryKey(user);
+    }
 }

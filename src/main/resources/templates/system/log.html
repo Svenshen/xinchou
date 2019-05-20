@@ -76,11 +76,12 @@
     $(function () {
         //Date range picker
         var beginTimeTake;
-        $('#reservation').daterangepicker({
+        $('#reservation').datepicker({
             "timePicker": false,
             "timePicker24Hour": true,
             "linkedCalendars": false,
             "autoUpdateInput": false,
+            "autoclose": true,
             "locale": {
                 format: 'YYYY-MM-DD',
                 separator: ' ~ ',

@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author cjbi
@@ -30,6 +33,12 @@ public class User {
     @NotBlank(message = "用户名不能为空")
     @Min(value = 3, message = "用户名不能低于3位")
     private String username;
+    
+    @Setter
+    @Getter
+    @NotBlank(message = "姓名不能为空")
+    private String name;
+    
     /**
      * 密码
      */

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author cjbi
@@ -33,6 +34,7 @@ public class HomeController extends BaseController {
     @Autowired
     private UserService userService;
 
+    
     @RequestMapping("/login")
     public String showLoginForm(HttpServletRequest req, Model model) {
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
@@ -50,6 +52,12 @@ public class HomeController extends BaseController {
         model.addAttribute("error", error);
         return "system/login";
     }
+    
+//    @RequestMapping("/hello")
+//    public String hello(Model model) {
+//        model.addAttribute("msg", "Hello World");
+//        return "/xinchou/hello";
+//    }
 
     @GetMapping("/")
     public String index(Model model) {

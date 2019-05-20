@@ -25,7 +25,9 @@ public class OrganizationServiceImpl extends BaseService<Organization> implement
     @Override
     @Transactional
     public void createOrganization(Organization organization) {
-        Organization parent = organizationMapper.selectOne(new Organization().setParentId(organization.getParentId()));
+        
+        Organization parent = organizationMapper.selectOne(new Organization().setId(organization.getParentId()));
+        
         organization.setParentIds(parent.makeSelfAsParentIds());
         organization.setAvailable(true);
         organizationMapper.insertSelective(organization);

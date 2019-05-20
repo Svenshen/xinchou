@@ -5,11 +5,13 @@
  * @autoor szh
  */
 
-package tech.wetech.admin.modules.system.po;
+package tech.wetech.admin.szh.xinchou.domain;
 
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import lombok.Data;
 
@@ -17,15 +19,17 @@ import lombok.Data;
  *
  * @author  szh
  * QQ:873689
- * @date 2019-4-28 11:48:13
+ * @date 2019-5-9 14:06:53
  */
 @Data
 @Entity
-public class Test implements Serializable{
-    @Id
-    @Column
-    String jigouhao;
-    @Column
-    String bumen;
+public class Toudiyewu implements Serializable{
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    Long id;
+    
+    @Column
+    String name;
 }
