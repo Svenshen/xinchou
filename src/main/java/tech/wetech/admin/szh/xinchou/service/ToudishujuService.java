@@ -9,6 +9,7 @@ package tech.wetech.admin.szh.xinchou.service;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
 import tech.wetech.admin.szh.xinchou.domain.ToudishujuId;
@@ -22,7 +23,9 @@ import tech.wetech.admin.szh.xinchou.domain.ToudishujuId;
 public interface ToudishujuService extends XinchouIService<Toudishuju,ToudishujuId>{
 
     
-    public void exceldaoru(MultipartFile file,String bumen,Date shijian) throws IOException,Exception;
+    public void exceldaoru(MultipartFile file,Long bumen,Long yewu,Date shijian) throws IOException,Exception;
     
+    List<Toudishuju> getshuju(Date kshijian,Date jshijian);
     
+    void deleteheji();
 }

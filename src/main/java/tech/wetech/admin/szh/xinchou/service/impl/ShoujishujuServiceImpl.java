@@ -11,6 +11,8 @@ import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import tech.wetech.admin.szh.xinchou.dao.ShoujishujuDao;
 import tech.wetech.admin.szh.xinchou.domain.Shoujikehu;
 import tech.wetech.admin.szh.xinchou.domain.Shoujishuju;
 import tech.wetech.admin.szh.xinchou.service.ShoujishujuService;
+import tech.wetech.admin.szh.xinchou.vo.ShoujixinchouVO;
 
 /**
  *
@@ -52,6 +55,32 @@ public class ShoujishujuServiceImpl extends XinchouBaseService<Shoujishuju,Strin
     @Override
     public List<Shoujikehu> querykehulist() {
         return shoujishujuDao.querykehulist();
+    }
+
+    @Override
+    public List<ShoujixinchouVO> queryxinchoushoujilist(Date kshijian,Date jshijian) {
+        List<Object[]> objects = shoujishujuDao.queryshoujixinchoulist(kshijian,jshijian);
+        List<ShoujixinchouVO> shoujixinchouVOs = new ArrayList();
+        for(Object[] b : objects){
+            for(int i = 0;i < b.length;i++){
+                if(b[i] == null || "null".equals(b[i])){
+                    b[i] = "0";
+                }
+            }
+            
+            ShoujixinchouVO s = new ShoujixinchouVO();
+            s.setBumenid(Long.valueOf(String.valueOf(b[0])));
+            s.setName(String.valueOf(b[1]));
+            s.setYewuid(Long.valueOf(String.valueOf(b[2])));
+            s.setKehuid(Long.valueOf(String.valueOf(b[3])));
+            s.setJianshu(Integer.valueOf(String.valueOf(b[4])));
+            s.setShouru(Double.valueOf(String.valueOf(b[5])));
+            shoujixinchouVOs.add(s);
+        }
+        
+        
+        
+        return shoujixinchouVOs;
     }
 
     

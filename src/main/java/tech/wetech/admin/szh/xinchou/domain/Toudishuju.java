@@ -34,7 +34,7 @@ public class Toudishuju implements Serializable{
     
     @Id
     @Column
-    String toudijigou;
+    Long bumenid;
     
     @Id
     @Column
@@ -42,7 +42,7 @@ public class Toudishuju implements Serializable{
     Date shijian;
     
     @Column
-    String yewu;
+    Long yewuid;
     
 //    @Excel(name = "商函平信")
 //    @Column

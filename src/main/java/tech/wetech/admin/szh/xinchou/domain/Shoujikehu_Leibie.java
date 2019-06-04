@@ -31,7 +31,7 @@ public class Shoujikehu_Leibie implements Serializable {
     String kehudaima;
     
     @Column
-    Long leibieid;
+    Long leibieid =0L;
     
     public Shoujikehu_Leibie(Shoujikehu_LeibieVO shoujikehu_LeibieVO){
         kehudaima = shoujikehu_LeibieVO.getKehudaima();

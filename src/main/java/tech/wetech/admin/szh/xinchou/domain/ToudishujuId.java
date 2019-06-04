@@ -23,5 +23,6 @@ public class ToudishujuId implements Serializable{
 
     String toudiyuan;
     Date shijian;
-    String toudijigou;
+    Long bumenid;
+    Long yewuid; 
 }

@@ -33,9 +33,11 @@ public class Shoujikehu_LeibieVO  {
     
     String leibiemingcheng;
     
-    public Shoujikehu_LeibieVO(Shoujikehu_Leibie shoujikehu_Leibie){
+    public Shoujikehu_LeibieVO(Shoujikehu_Leibie shoujikehu_Leibie,String kehumingcheng,String leibiemingcheng){
         kehudaima = shoujikehu_Leibie.getKehudaima();
         leibieid = shoujikehu_Leibie.getLeibieid();
+        this.kehumingcheng = kehumingcheng;
+        this.leibiemingcheng = leibiemingcheng;
     }
     
     public Shoujikehu_LeibieVO(){

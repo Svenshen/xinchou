@@ -7,9 +7,11 @@
 
 package tech.wetech.admin.szh.xinchou.dao;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tech.wetech.admin.szh.xinchou.domain.Shoujishuju;
 import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
@@ -24,6 +26,11 @@ import tech.wetech.admin.szh.xinchou.domain.ToudishujuId;
 @Repository
 public interface ToudishujuDao extends  JpaRepository<Toudishuju,ToudishujuId>{
     
+//    @Query(value = "select * from #{#entityName} where shijian BETWEEN :kshijian and :jshijian order by bumenid,toudiyuan")
+//    List<Toudishuju> findByShijian(@Param("kshijian") Date kshijian,@Param("jshijian") Date jshijian);
     
-
+    @Query(value = "select * from #{#entityName} where shijian BETWEEN :kshijian and :jshijian order by bumenid,toudiyuan", nativeQuery = true)
+    List<Toudishuju> findByShijian(@Param("kshijian") Date kshijian,@Param("jshijian") Date jshijian);
+    
+    void deleteByToudiyuan(String toudiyuan);
 }

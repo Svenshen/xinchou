@@ -27,6 +27,7 @@ import tech.wetech.admin.core.annotation.SystemLog;
 import tech.wetech.admin.core.utils.Result;
 import tech.wetech.admin.modules.system.po.Organization;
 import tech.wetech.admin.modules.system.service.OrganizationService;
+import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
 import tech.wetech.admin.szh.xinchou.service.ShoujishujuService;
 import tech.wetech.admin.szh.xinchou.service.ToudishujuService;
 import tech.wetech.admin.szh.xinchou.service.ToudiyewuService;
@@ -43,9 +44,7 @@ public class ToudiController {
     
     
     @Autowired
-    private OrganizationService organizationService;
-    @Autowired
-    ShoujishujuService shoujishujuService;
+    OrganizationService organizationService;
     @Autowired
     ToudishujuService toudishujuService;
     @Autowired
@@ -71,10 +70,10 @@ public class ToudiController {
     @PostMapping("/daoru")
     @RequiresPermissions("toudi:daoru")
     @SystemLog("投递信息导入")
-    public void daoru(@RequestParam("shoujifile") MultipartFile file,@RequestParam("bumen") String bumen,@RequestParam("shijian") String shijian,HttpServletResponse response) throws IOException,Exception{
+    public void daoru(@RequestParam("shoujifile") MultipartFile file,@RequestParam("bumen") Long bumen,@RequestParam("yewu") Long yewu,@RequestParam("shijian") String shijian,HttpServletResponse response) throws IOException,Exception{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        
-        toudishujuService.exceldaoru(file, bumen,sdf.parse(shijian));
+        toudishujuService.exceldaoru(file, bumen,yewu,sdf.parse(shijian));
+        toudishujuService.deleteheji();
         response.setContentType("text/html; charset=utf-8");
         PrintWriter out = response.getWriter();
         out.print("<script>alert('导入成功');</script>");

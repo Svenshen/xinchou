@@ -30,9 +30,10 @@ public class ShoujiyewuLeibieVO {
     
     String shoujileibie;
     
-    public ShoujiyewuLeibieVO(ShoujiyewuLeibie shoujiyewuLeibie){
+    public ShoujiyewuLeibieVO(ShoujiyewuLeibie shoujiyewuLeibie,String shoujileibie){
         shoujiyewu = shoujiyewuLeibie.getShoujiyewu();
         shoujileibieid = shoujiyewuLeibie.getShoujileibieid();
+        this.shoujileibie = shoujileibie;
     }
     
     public ShoujiyewuLeibieVO(){

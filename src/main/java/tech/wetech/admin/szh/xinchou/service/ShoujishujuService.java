@@ -8,6 +8,7 @@
 package tech.wetech.admin.szh.xinchou.service;
 
 import java.io.IOException;
+import java.util.Date;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wetech.admin.szh.xinchou.domain.Shoujishuju;
 import java.util.List;
@@ -25,4 +26,7 @@ public interface ShoujishujuService  extends XinchouIService<Shoujishuju, String
     List queryyewulist();
     
     List querykehulist();
+    
+    List queryxinchoushoujilist(Date kshijian,Date jshijian);
+    
 }

@@ -39,11 +39,13 @@ public class ToudidanjiaVO {
     
 
     
-    public  ToudidanjiaVO(Toudidanjia toudidanjia){
+    public  ToudidanjiaVO(Toudidanjia toudidanjia,String bumen,String yewu){
         bumenid = toudidanjia.getBumenid();
         name = toudidanjia.getName();
         yewuid = toudidanjia.getYewuid();
         danjia = toudidanjia.getDanjia();
+        this.bumen = bumen;
+        this.yewu = yewu;
     }
 
     public  ToudidanjiaVO(){

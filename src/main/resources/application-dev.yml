@@ -72,7 +72,7 @@ spring:
             #validate 项目启动表结构进行校验 如果不一致则报错
             #none 则不进行任何操作
             ddl-auto: update
-        show-sql: false
+        show-sql: true
         
     thymeleaf:
         cache: false

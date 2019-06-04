@@ -10,11 +10,13 @@ package tech.wetech.admin.szh.xinchou.service.impl;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wetech.admin.szh.xinchou.dao.ToudishujuDao;
 import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
@@ -34,7 +36,7 @@ public class ToudishujuServiceImpl extends XinchouBaseService<Toudishuju,Toudish
     ToudishujuDao toudishujuDao;
 
     @Override
-    public void exceldaoru(MultipartFile file, String bumen,Date shijian) throws IOException, Exception {
+    public void exceldaoru(MultipartFile file, Long bumen,Long yewu,Date shijian) throws IOException, Exception {
         Calendar cal=Calendar.getInstance();
         cal.setTime(shijian);
         cal.set(Calendar.DAY_OF_MONTH, 1);
@@ -48,10 +50,24 @@ public class ToudishujuServiceImpl extends XinchouBaseService<Toudishuju,Toudish
         params.setHeadRows(1);
         List<Toudishuju>  listtoudishuju =ExcelImportUtil.importExcel(file.getInputStream(), Toudishuju.class, params);
         for(Toudishuju j : listtoudishuju){
-            j.setToudijigou(bumen);
+            j.setBumenid(bumen);
+            j.setYewuid(yewu);
             j.setShijian(shijian);
         }
         toudishujuDao.saveAll(listtoudishuju);
+    }
+
+    @Override
+    public List<Toudishuju> getshuju(Date kshijian, Date jshijian) {
+        //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return toudishujuDao.findByShijian(kshijian, jshijian);
+        //return toudishujuDao.findByShijian(sdf.format(kshijian), sdf.format(jshijian));
+    }
+
+    @Override
+    @Transactional
+    public void deleteheji() {
+        toudishujuDao.deleteByToudiyuan("合计");
     }
     
     
