@@ -10,9 +10,11 @@ package tech.wetech.admin.szh.xinchou.dao;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import tech.wetech.admin.szh.xinchou.domain.Shoujikehu;
 import tech.wetech.admin.szh.xinchou.domain.Shoujishuju;
 import tech.wetech.admin.szh.xinchou.vo.ShoujixinchouVO;
@@ -48,6 +50,8 @@ public interface ShoujishujuDao extends  JpaRepository<Shoujishuju,String>{
     
     List<Object[]> queryshoujixinchoulist(@Param("kshijian") Date kshijian,@Param("jshijian") Date jshijian);
     
-    @Query(value = "update #{#entityName} set kehudaima = '-1' , kehumingcheng = '散户空白' where kehudaima is not null",nativeQuery = true)
+    @Transactional
+    @Modifying
+    @Query(value = "update #{#entityName} set kehudaima = '-1' , kehumingcheng = '散户空白' where kehudaima is null",nativeQuery = true)
     void updatesanhu();
 }
