@@ -29,4 +29,5 @@ public interface ShoujishujuService  extends XinchouIService<Shoujishuju, String
     
     List queryxinchoushoujilist(Date kshijian,Date jshijian);
     
+    void updatesanhu();
 }

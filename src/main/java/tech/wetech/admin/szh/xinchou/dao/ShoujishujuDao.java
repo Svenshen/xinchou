@@ -48,4 +48,6 @@ public interface ShoujishujuDao extends  JpaRepository<Shoujishuju,String>{
     
     List<Object[]> queryshoujixinchoulist(@Param("kshijian") Date kshijian,@Param("jshijian") Date jshijian);
     
+    @Query(value = "update #{#entityName} set kehudaima = '-1' , kehumingcheng = '散户空白' where kehudaima is not null",nativeQuery = true)
+    void updatesanhu();
 }

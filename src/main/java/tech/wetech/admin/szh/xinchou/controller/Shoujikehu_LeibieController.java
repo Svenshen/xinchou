@@ -65,7 +65,6 @@ public class Shoujikehu_LeibieController {
     public Result<List<Shoujikehu_LeibieVO>> queryList() {
         List<Shoujikehu_LeibieVO> shoujikehu_LeibieVOs = new ArrayList();
         List<Shoujikehu> shoujikehus = shoujishujuService.querykehulist();
-       
         shoujikehuService.saveAndupdateAll(shoujikehus);
         shoujikehus.forEach((shoujikehu)->{
             if(shoujikehu_LeibieService.queryById(shoujikehu.getKehudaima()) == null){

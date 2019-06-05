@@ -45,6 +45,7 @@ public class ShoujishujuServiceImpl extends XinchouBaseService<Shoujishuju,Strin
             j.setShoujijigou(bumen);
         });
         shoujishujuDao.saveAll(listshoujishuju);
+        updatesanhu();
     }
 
     @Override
@@ -81,6 +82,11 @@ public class ShoujishujuServiceImpl extends XinchouBaseService<Shoujishuju,Strin
         
         
         return shoujixinchouVOs;
+    }
+
+    @Override
+    public void updatesanhu() {
+        shoujishujuDao.updatesanhu();
     }
 
     

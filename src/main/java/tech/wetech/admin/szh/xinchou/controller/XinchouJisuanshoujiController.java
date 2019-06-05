@@ -100,6 +100,7 @@ public class XinchouJisuanshoujiController {
             }
             ShoujidanjiatichengId shoujidanjiatichengId = new ShoujidanjiatichengId();
             shoujidanjiatichengId.setBumenid(shoujixinchouvo.getBumenid());
+            
             shoujidanjiatichengId.setKehuid(shoujixinchouvo.getKehuid());
             shoujidanjiatichengId.setYewuid(shoujixinchouvo.getYewuid());
             shoujidanjiatichengId.setName(shoujixinchouvo.getName());
