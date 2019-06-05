@@ -15,7 +15,7 @@ spring:
         driver-class-name: com.mysql.jdbc.Driver
         type: com.alibaba.druid.pool.DruidDataSource
         password: 63559627
-        url: jdbc:mysql://localhost:3306/xinchou?useSSL=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+        url: jdbc:mysql://db:3306/xinchou?useSSL=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
         username: root
     
     druid:
