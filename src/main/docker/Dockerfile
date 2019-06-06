@@ -5,7 +5,7 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
 #ARG JAR_FILE
-#RUN apk add -U tzdata
+RUN apk add -U tzdata
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo "Asia/Shanghai" > /etc/timezone
 #COPY ${JAR_FILE} app.jar
