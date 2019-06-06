@@ -36,7 +36,7 @@ public class XinchoufanganController {
     @GetMapping
     @RequiresPermissions("jisuan:fangan")
     public String page(){
-        return "/xinchou/jisuanfangan";
+        return "xinchou/jisuanfangan";
     }
     
     @ResponseBody

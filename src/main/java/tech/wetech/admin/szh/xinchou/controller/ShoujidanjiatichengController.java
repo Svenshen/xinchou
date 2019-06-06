@@ -66,7 +66,7 @@ public class ShoujidanjiatichengController {
     @GetMapping
     @RequiresPermissions("shouji:danjia")
     public String page(){
-        return "/xinchou/shoujidanjia";
+        return "xinchou/shoujidanjia";
     }
     
     @ResponseBody

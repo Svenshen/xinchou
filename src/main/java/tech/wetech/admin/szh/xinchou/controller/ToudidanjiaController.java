@@ -54,7 +54,7 @@ public class ToudidanjiaController {
     @GetMapping
     @RequiresPermissions("toudi:danjia")
     public String page(Model model){
-        return "/xinchou/toudidanjia";
+        return "xinchou/toudidanjia";
     }
     
     @ResponseBody

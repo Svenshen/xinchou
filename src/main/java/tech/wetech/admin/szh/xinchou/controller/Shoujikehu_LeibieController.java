@@ -56,7 +56,7 @@ public class Shoujikehu_LeibieController {
     @GetMapping
     @RequiresPermissions("shouji:kehu")
     public String page(){
-        return "/xinchou/shoujikehu";
+        return "xinchou/shoujikehu";
     }
 
     @ResponseBody

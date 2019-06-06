@@ -37,7 +37,7 @@ public class ShoujileibieController {
     @GetMapping
     @RequiresPermissions("shouji:leibie")
     public String page(){
-        return "/xinchou/shoujileibie";
+        return "xinchou/shoujileibie";
     }
 
     @ResponseBody
