@@ -1,9 +1,12 @@
 package tech.wetech.admin.modules.system.dto;
 
+import lombok.Data;
+
 /**
  *
  * @author cjbi
  */
+@Data
 public class TreeDto {
 
     private Long id;

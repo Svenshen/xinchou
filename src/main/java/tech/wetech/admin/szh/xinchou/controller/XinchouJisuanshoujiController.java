@@ -17,9 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.wetech.admin.core.utils.Result;
+import tech.wetech.admin.core.utils.ResultCodeEnum;
 import tech.wetech.admin.modules.system.po.Organization;
 import tech.wetech.admin.modules.system.service.OrganizationService;
 import tech.wetech.admin.szh.xinchou.domain.Shoujidanjiaticheng;
@@ -27,12 +29,14 @@ import tech.wetech.admin.szh.xinchou.domain.ShoujidanjiatichengId;
 import tech.wetech.admin.szh.xinchou.domain.Shoujikehu;
 import tech.wetech.admin.szh.xinchou.domain.Shoujikehuleibie;
 import tech.wetech.admin.szh.xinchou.domain.Shoujileibie;
+import tech.wetech.admin.szh.xinchou.domain.Xinchoushuju;
 import tech.wetech.admin.szh.xinchou.service.ShoujidanjiatichengService;
 import tech.wetech.admin.szh.xinchou.service.ShoujikehuService;
 import tech.wetech.admin.szh.xinchou.service.ShoujikehuleibieService;
 import tech.wetech.admin.szh.xinchou.service.ShoujileibieService;
 import tech.wetech.admin.szh.xinchou.service.ShoujishujuService;
 import tech.wetech.admin.szh.xinchou.service.XinchoufanganService;
+import tech.wetech.admin.szh.xinchou.service.XinchoushujuService;
 import tech.wetech.admin.szh.xinchou.vo.ShoujixinchouVO;
 
 /**
@@ -47,10 +51,8 @@ public class XinchouJisuanshoujiController {
     
     @Autowired
     XinchoufanganService xinchoufanganService;
-    
     @Autowired
     ShoujishujuService shoujishujuService;
-    
     @Autowired
     OrganizationService organizationService;
     @Autowired
@@ -59,6 +61,10 @@ public class XinchouJisuanshoujiController {
     ShoujileibieService shoujileibieService;
     @Autowired
     ShoujidanjiatichengService shoujidanjiatichengService;
+    @Autowired
+    XinchoushujuService xinchoushujuService;
+    
+    
     
     @ModelAttribute("fanganList")
     public List fanganlist(){
@@ -73,13 +79,59 @@ public class XinchouJisuanshoujiController {
     }
     
     @ResponseBody
+    @PostMapping("/baocun")
+    @RequiresPermissions("jisuan:shoujibaocun")
+    public Result baocun(HttpServletRequest request) throws  ParseException{
+        String kshijian = request.getParameter("kshijian");
+        String jshijian = request.getParameter("jshijian");
+        String fangan = request.getParameter("fangan");
+        if(kshijian == null || jshijian == null || fangan == null){
+            return Result.failure(ResultCodeEnum.BAD_REQUEST);
+        }
+        Long fanganid = Long.valueOf(fangan);
+        xinchoushujuService.deleteshoujishuju(fanganid);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<ShoujixinchouVO> shoujixinchouVOs = shoujishujuService.queryxinchoushoujilist(sdf.parse(kshijian), sdf.parse(jshijian));
+        List<Xinchoushuju> shoujixinchouVOs1 = new ArrayList();
+        for(ShoujixinchouVO shoujixinchouvo:shoujixinchouVOs){
+            ShoujidanjiatichengId shoujidanjiatichengId = new ShoujidanjiatichengId();
+            shoujidanjiatichengId.setBumenid(shoujixinchouvo.getBumenid());
+            
+            shoujidanjiatichengId.setKehuid(shoujixinchouvo.getKehuid());
+            shoujidanjiatichengId.setYewuid(shoujixinchouvo.getYewuid());
+            shoujidanjiatichengId.setName(shoujixinchouvo.getName());
+            
+            Shoujidanjiaticheng shoujidanjiaticheng = shoujidanjiatichengService.queryById(shoujidanjiatichengId);
+            double danjia = 0.0;
+            double ticheng = 0.0;
+            if(shoujidanjiaticheng != null){
+                danjia = shoujidanjiaticheng.getDanjia();
+                ticheng = shoujidanjiaticheng.getTicheng();
+            }
+            double xinchou = 0.0;
+            xinchou = shoujixinchouvo.getJianshu()*danjia+shoujixinchouvo.getShouru()*ticheng;
+            
+            shoujixinchouvo.setBumen(getOrganizationName(shoujixinchouvo.getBumenid()));
+            shoujixinchouvo.setYewu(getYewuName(shoujixinchouvo.getYewuid()));
+            shoujixinchouvo.setKehu(getKehu(shoujixinchouvo.getKehuid()));
+            shoujixinchouvo.setDanjia(danjia);
+            shoujixinchouvo.setTicheng(ticheng);
+            shoujixinchouvo.setXinchou(xinchou);
+            shoujixinchouVOs1.add(new Xinchoushuju(shoujixinchouvo,fanganid));
+        }
+        xinchoushujuService.saveAndupdateAll(shoujixinchouVOs1);
+        
+        return Result.success();
+    }
+    
+    @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("jisuan:shouji")
     public Result<List<ShoujixinchouVO>> queryList(HttpServletRequest request) throws  ParseException{
         String kshijian = request.getParameter("kshijian");
         String jshijian = request.getParameter("jshijian");
         if(kshijian == null || jshijian == null){
-            return Result.success();
+            return Result.failure(ResultCodeEnum.BAD_REQUEST);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<ShoujixinchouVO> shoujixinchouVOs = shoujishujuService.queryxinchoushoujilist(sdf.parse(kshijian), sdf.parse(jshijian));
@@ -96,6 +148,8 @@ public class XinchouJisuanshoujiController {
                     ShoujixinchouVO shoujixinchouVO = new ShoujixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", -1L, "", 0, 0, 0, 0, xinchouheji);
                     shoujixinchouVOs1.add(shoujixinchouVO);
                     xinchouheji = 0.0;
+                    xingming = shoujixinchouvo.getName();
+                    bumen = shoujixinchouvo.getBumenid();
                 }
             }
             ShoujidanjiatichengId shoujidanjiatichengId = new ShoujidanjiatichengId();
@@ -125,6 +179,8 @@ public class XinchouJisuanshoujiController {
 //            ShoujixinchouVO shoujixinchouVO = new ShoujixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
             shoujixinchouVOs1.add(shoujixinchouvo);
         }
+        ShoujixinchouVO shoujixinchouVO = new ShoujixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", -1L, "", 0, 0, 0, 0, xinchouheji);
+        shoujixinchouVOs1.add(shoujixinchouVO);
         return Result.success(shoujixinchouVOs1);
     }
     

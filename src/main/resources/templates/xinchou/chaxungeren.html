@@ -5,13 +5,13 @@
 <section class="content-header" style="">
     <h1>
         薪酬计算
-        <small>投递计算</small>
+        <small>收寄计算</small>
         
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> 主页</a></li>
         <li><a href="#">薪酬计算</a></li>        
-        <li class="active">投递计算</li>
+        <li class="active">收寄计算</li>
     </ol>
 </section>
 
@@ -24,13 +24,15 @@
                     <div id="toolbar">
                         <form class="form-inline" id="searchForm">
                             <div class="form-group">
-                                <label for="kshijian"> 开始时间</label>
-                                <input type="text" class="form-control input-sm form_datetime" name="kshijian" id="kshijian" placeholder="请选择时间" required>
+                                
+                                <select name="fangan" id="roleIds" class="form-control select2"
+                                        data-placeholder="请从列表选择一项" required>
+                                    <option th:each="fangan : ${fanganList}" th:value="${fangan.id}" th:text="${fangan.name}">
+                                        方案不存在
+                                    </option>
+                                </select>
                             </div>
-                            <div class="form-group">
-                                <label for="searchName"> 结束时间</label>
-                                <input type="text" class="form-control input-sm form_datetime" name="jshijian" id="jshijian" placeholder="请选择时间" required>
-                            </div>
+                            
                             <div class="btn-group btn-group-sm">
                                 <button type="button" class="btn btn-default" onclick="javascript:$('table').bootstrapTable('refresh', {silent: true});">
                                     <i class="glyphicon glyphicon-search"></i>
@@ -43,11 +45,13 @@
                             </div>
                         </form>
                         
-                        <div class="btn-group btn-group-sm">
-                            <button shiro:hasPermission="jisuan:toudibaocun" type="button" id="addBtn" class="btn btn-default"
+                        
+                        
+<!--                        <div class="btn-group btn-group-sm">
+                            <button shiro:hasPermission="jisuan:shoujibaocun" type="button" id="addBtn" class="btn btn-default"
                                     data-toggle="modal"
                                     data-target="#addModal"><i class="glyphicon glyphicon-plus"></i> 结果另存
-                            </button>
+                            </button>-->
 <!--                             Provides extra visual weight and identifies the primary action in a set of buttons 
                             <button shiro:hasPermission="user:create" type="button" id="addBtn" class="btn btn-default"
                                     data-toggle="modal"
@@ -66,7 +70,7 @@
                                     data-action="{type:'delete',form:'#deleteForm',idField:'id',table:'#table'}"
                                     disabled><i class="glyphicon glyphicon-remove"></i> 删除
                             </button>-->
-                        </div>
+<!--                        </div>-->
                     </div>
                     <table id="table"></table>
                 </div>
@@ -81,7 +85,8 @@
 </section>
 <!-- /.content -->
 
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+<!-- add Modal -->
+<!--<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -103,7 +108,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="roleIds"><span class="asterisk">*</span>薪酬方案:</label>
-                        <select name="fangan" id="roleIds"  class="form-control select2"
+                        <select name="fangan" id="roleIds" class="form-control select2"
                                 data-placeholder="请从列表选择一项" required>
                             <option th:each="fangan : ${fanganList}" th:value="${fangan.id}" th:text="${fangan.name}">
                                 方案不存在
@@ -116,13 +121,13 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="submit" form="addForm" class="btn btn-primary"
-                        data-action="{type:'submit',form:'#addForm',url:'@{/xinchou/jisuan/toudi/baocun}',after:'$.myAction.refreshTable'}">
+                        data-action="{type:'submit',form:'#addForm',url:'@{/xinchou/jisuan/shouji/baocun}',after:'$.myAction.refreshTable'}">
                     确定
                 </button>
             </div>
         </div>
     </div>
-</div>
+</div>-->
 <!-- edit Modal -->
 <!--<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
     <div class="modal-dialog" role="document">
@@ -224,20 +229,23 @@
         // bootstrap table初始化
         // http://bootstrap-table.wenzhixin.net.cn/zh-cn/documentation/
         $table.bootstrapTable({
-            url: CONTEXT_PATH + '/xinchou/jisuan/toudi/list',
+            url: CONTEXT_PATH + '/xinchou/chaxun/geren/list',
             idField: 'id',
             showExport: true,   
             exportDataType: "basic",
             exportTypes:['xlsx'],
             columns: [
-                
+                {field: 'fanganid', title: '方案id', sortable: true, halign: 'left',visible:false},
                 {field: 'bumenid', title: '部门id', sortable: true, halign: 'left',visible:false},
                 {field: 'bumen', title: '部门', sortable: true, halign: 'left'},
                 {field: 'name', title: '姓名', sortable: true, halign: 'left'},
-                {field: 'yewuid', title: '业务类id', sortable: true, halign: 'left',visible:false},
+                {field: 'zhonglei', title: '薪酬种类', sortable: true, halign: 'left'},
                 {field: 'yewu', title: '业务类', sortable: true, halign: 'left'},  
+                {field: 'kehu', title: '客户类', sortable: true, halign: 'left'},  
                 {field: 'danjia', title: '单价', sortable: false, halign: 'left'},
                 {field: 'jianshu', title: '件数', sortable: false, halign: 'left'},
+                {field: 'ticheng', title: '提成', sortable: false, halign: 'left'},
+                {field: 'shouru', title: '收入', sortable: false, halign: 'left'},
                 {field: 'xinchou', title: '薪酬', sortable: false, halign: 'left'}
 //                {
 //                    field: 'action',

@@ -19,20 +19,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import tech.wetech.admin.core.utils.Result;
+import tech.wetech.admin.core.utils.ResultCodeEnum;
 import tech.wetech.admin.modules.system.po.Organization;
 import tech.wetech.admin.modules.system.service.OrganizationService;
 import tech.wetech.admin.szh.xinchou.domain.Toudidanjia;
 import tech.wetech.admin.szh.xinchou.domain.ToudidanjiaId;
 import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
 import tech.wetech.admin.szh.xinchou.domain.Toudiyewu;
+import tech.wetech.admin.szh.xinchou.domain.Xinchoushuju;
 import tech.wetech.admin.szh.xinchou.service.ToudidanjiaService;
 import tech.wetech.admin.szh.xinchou.service.ToudishujuService;
 import tech.wetech.admin.szh.xinchou.service.ToudiyewuService;
 import tech.wetech.admin.szh.xinchou.service.XinchoufanganService;
+import tech.wetech.admin.szh.xinchou.service.XinchoushujuService;
 import tech.wetech.admin.szh.xinchou.vo.ToudixinchouVO;
 
 /**
@@ -55,6 +59,8 @@ public class XinchouJisuantoudiController {
     XinchoufanganService xinchoufanganService;
     @Autowired
     ToudidanjiaService toudidanjiaService;
+    @Autowired
+    XinchoushujuService xinchoushujuService;
     
     @ModelAttribute("fanganList")
     public List fanganlist(){
@@ -70,11 +76,11 @@ public class XinchouJisuantoudiController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("jisuan:toudi")
-    public Result<List<ToudixinchouVO>> queryList(HttpServletRequest request) throws  ParseException{
+    public Result queryList(HttpServletRequest request) throws  ParseException{
         String kshijian = request.getParameter("kshijian");
         String jshijian = request.getParameter("jshijian");
         if(kshijian == null || jshijian == null){
-            return Result.success();
+            return Result.failure(ResultCodeEnum.BAD_REQUEST);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<ToudixinchouVO> toudixinchouVOs = new ArrayList();
@@ -92,11 +98,10 @@ public class XinchouJisuantoudiController {
                     ToudixinchouVO toudixinchouVO =  new ToudixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", 0.0, 0, xinchouheji);
                     toudixinchouVOs.add(toudixinchouVO);
                     xinchouheji = 0.0;
+                    xingming = toudishuju.getToudiyuan();
+                    bumen = toudishuju.getBumenid();
                 }
             }
-            
-            
-            
             
             ToudidanjiaId toudidanjiaId = new ToudidanjiaId();
             toudidanjiaId.setBumenid(toudishuju.getBumenid());
@@ -113,7 +118,45 @@ public class XinchouJisuantoudiController {
             ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
             toudixinchouVOs.add(toudixinchouVO);
         }
+        ToudixinchouVO toudixinchouVO =  new ToudixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", 0.0, 0, xinchouheji);
+        toudixinchouVOs.add(toudixinchouVO);
         return Result.success(toudixinchouVOs);
+    }
+    
+    
+    @ResponseBody
+    @PostMapping("/baocun")
+    @RequiresPermissions("jisuan:toudibaocun")
+    public Result<List<ToudixinchouVO>> baocun(HttpServletRequest request) throws  ParseException{
+        String kshijian = request.getParameter("kshijian");
+        String jshijian = request.getParameter("jshijian");
+        String fangan = request.getParameter("fangan");
+        if(kshijian == null || jshijian == null || fangan == null){
+            return Result.failure(ResultCodeEnum.BAD_REQUEST);
+        }
+        Long fanganid = Long.valueOf(fangan);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<Xinchoushuju> toudixinchouVOs = new ArrayList();
+        List<Toudishuju> toudishujus = toudishujuService.getshuju(sdf.parse(kshijian), sdf.parse(jshijian));
+        
+        for(Toudishuju toudishuju:toudishujus){
+            ToudidanjiaId toudidanjiaId = new ToudidanjiaId();
+            toudidanjiaId.setBumenid(toudishuju.getBumenid());
+            toudidanjiaId.setName(toudishuju.getToudiyuan());
+            toudidanjiaId.setYewuid(toudishuju.getYewuid());
+            Toudidanjia toudidanjia = toudidanjiaService.queryById(toudidanjiaId);
+            double danjia = 0.0;
+            if(toudidanjia != null){
+                danjia = toudidanjia.getDanjia();
+            }
+            double xinchou = 0.0;
+            xinchou = toudishuju.getShuliang()*danjia;
+            
+            ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
+            toudixinchouVOs.add(new Xinchoushuju(toudixinchouVO,fanganid));
+        }
+        xinchoushujuService.saveAndupdateAll(toudixinchouVOs);
+        return Result.success();
     }
     
     

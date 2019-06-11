@@ -42,8 +42,15 @@
                                 </button>
                             </div>
                         </form>
-<!--                        <div class="btn-group btn-group-sm">
-                             Provides extra visual weight and identifies the primary action in a set of buttons 
+                        
+                        
+                        
+                        <div class="btn-group btn-group-sm">
+                            <button shiro:hasPermission="jisuan:shoujibaocun" type="button" id="addBtn" class="btn btn-default"
+                                    data-toggle="modal"
+                                    data-target="#addModal"><i class="glyphicon glyphicon-plus"></i> 结果另存
+                            </button>
+<!--                             Provides extra visual weight and identifies the primary action in a set of buttons 
                             <button shiro:hasPermission="user:create" type="button" id="addBtn" class="btn btn-default"
                                     data-toggle="modal"
                                     data-target="#addModal"><i class="glyphicon glyphicon-plus"></i> 新增
@@ -60,8 +67,8 @@
                                     data-target="#deleteModal"
                                     data-action="{type:'delete',form:'#deleteForm',idField:'id',table:'#table'}"
                                     disabled><i class="glyphicon glyphicon-remove"></i> 删除
-                            </button>
-                        </div>-->
+                            </button>-->
+                        </div>
                     </div>
                     <table id="table"></table>
                 </div>
@@ -77,65 +84,32 @@
 <!-- /.content -->
 
 <!-- add Modal -->
-<!--<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="addModalLabel">添加用户</h4>
+                <h4 class="modal-title" id="addModalLabel">结果另存</h4>
             </div>
             <div class="modal-body">
                 <form id="addForm">
                     <div class="form-group">
-                        <label class="control-label" for="username"><span class="asterisk">*</span>用户名:</label>
-                        <input id="username" type="text" class="form-control" name="username" placeholder="输入用户名"
-                               minlength="3">
+                        <label class="control-label" for="username"><span class="asterisk">*</span>开始时间:</label>
+                        <input type="text" class="form-control input-sm form_datetime" name="kshijian"  placeholder="请选择时间" required />
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" for="username"><span class="asterisk">*</span>姓名:</label>
-                        <input id="name" type="text" class="form-control" name="name" placeholder="输入姓名"
-                               minlength="1">
+                        <label class="control-label" for="username"><span class="asterisk">*</span>结束时间:</label>
+                        <input type="text" class="form-control input-sm form_datetime" name="jshijian" placeholder="请选择时间" required />
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" for="password"><span class="asterisk">*</span>密码:</label>
-                        <input type="password" id="password" class="form-control" minlength="6"
-                               name="password" placeholder="输入密码" required>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="inputPasswordConfirm"><span
-                                class="asterisk">*</span>确认密码:</label>
-                        <input type="password" class="form-control" id="inputPasswordConfirm" minlength="6"
-                               data-match="#password" data-match-error="密码输入不一致。" name="chkpassowrd" placeholder="确认密码"
-                               required>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="organizationName"><span class="asterisk">*</span>所属组织:</label>
-                        <input type="text" class="form-control" id="organizationName" name="organizationName" readonly
-                               required>
-                        <input type="hidden" id="organizationId" name="organizationId" readonly required>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="roleIds"><span class="asterisk">*</span>角色列表:</label>
-                        <select name="roleIds" id="roleIds" multiple class="form-control select2"
+                        <label class="control-label" for="roleIds"><span class="asterisk">*</span>薪酬方案:</label>
+                        <select name="fangan" id="roleIds" class="form-control select2"
                                 data-placeholder="请从列表选择一项" required>
-                            <option th:each="role : ${roleList}" th:value="${role.id}" th:text="${role.description}">
-                                角色不存在
-                            </option>
-                        </select>
-                        <div class="help-block with-errors"></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label" for="groupIds"><span class="asterisk">*</span>组列表:</label>
-                        <select name="groupIds" id="groupIds" multiple class="form-control select2"
-                                data-placeholder="请从列表选择一项" required>
-                            <option th:each="group : ${groupList}" th:value="${group.id}" th:text="${group.name}">
-                                用户组不存在
+                            <option th:each="fangan : ${fanganList}" th:value="${fangan.id}" th:text="${fangan.name}">
+                                方案不存在
                             </option>
                         </select>
                         <div class="help-block with-errors"></div>
@@ -145,13 +119,13 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="submit" form="addForm" class="btn btn-primary"
-                        data-action="{type:'submit',form:'#addForm',url:'@{/user/create}',after:'$.myAction.refreshTable'}">
+                        data-action="{type:'submit',form:'#addForm',url:'@{/xinchou/jisuan/shouji/baocun}',after:'$.myAction.refreshTable'}">
                     确定
                 </button>
             </div>
         </div>
     </div>
-</div>-->
+</div>
 <!-- edit Modal -->
 <!--<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
     <div class="modal-dialog" role="document">
@@ -255,6 +229,9 @@
         $table.bootstrapTable({
             url: CONTEXT_PATH + '/xinchou/jisuan/shouji/list',
             idField: 'id',
+            showExport: true,   
+            exportDataType: "basic",
+            exportTypes:['xlsx'],
             columns: [
                 
                 {field: 'bumenid', title: '部门id', sortable: true, halign: 'left',visible:false},

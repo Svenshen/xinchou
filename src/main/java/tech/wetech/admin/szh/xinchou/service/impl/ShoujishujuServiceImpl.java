@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wetech.admin.szh.xinchou.dao.ShoujishujuDao;
 import tech.wetech.admin.szh.xinchou.domain.Shoujikehu;
@@ -85,6 +86,7 @@ public class ShoujishujuServiceImpl extends XinchouBaseService<Shoujishuju,Strin
     }
 
     @Override
+    
     public void updatesanhu() {
         shoujishujuDao.updatesanhu();
     }

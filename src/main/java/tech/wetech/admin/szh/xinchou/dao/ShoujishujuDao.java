@@ -53,5 +53,5 @@ public interface ShoujishujuDao extends  JpaRepository<Shoujishuju,String>{
     @Transactional
     @Modifying
     @Query(value = "update #{#entityName} set kehudaima = '-1' , kehumingcheng = '散户空白' where kehudaima is null",nativeQuery = true)
-    void updatesanhu();
+    int updatesanhu();
 }
