@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.wetech.admin.szh.xinchou.dao.XinchoufanganDao;
 import tech.wetech.admin.szh.xinchou.domain.Xinchoufangan;
 import tech.wetech.admin.szh.xinchou.service.XinchoufanganService;
+import tech.wetech.admin.szh.xinchou.service.XinchoushujuService;
 
 /**
  *
@@ -25,7 +26,8 @@ public class XinchoufanganServiceImpl extends XinchouBaseService<Xinchoufangan,L
 
     @Autowired
     XinchoufanganDao xinchoufanganDao;
-    
+    @Autowired
+    XinchoushujuService xinchoushujuService;
     
     
     @Override
@@ -45,6 +47,10 @@ public class XinchoufanganServiceImpl extends XinchouBaseService<Xinchoufangan,L
     @Transactional
     public void delete(Xinchoufangan xinchoufangan) {
         xinchoufanganDao.delete(xinchoufangan);
+        xinchoushujuService.deleteshoujishuju(xinchoufangan.getId());
+        xinchoushujuService.deletetoudishuju(xinchoufangan.getId());
     }
+    
+    
 
 }

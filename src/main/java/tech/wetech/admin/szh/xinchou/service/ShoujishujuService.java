@@ -21,7 +21,7 @@ import java.util.List;
  */
 public interface ShoujishujuService  extends XinchouIService<Shoujishuju, String>{
 
-    void exceldaoru(MultipartFile file,String bumen) throws IOException,Exception;
+    void exceldaoru(MultipartFile file,String bumen,String daoruid) throws IOException,Exception;
     
     List queryyewulist();
     
@@ -30,4 +30,8 @@ public interface ShoujishujuService  extends XinchouIService<Shoujishuju, String
     List queryxinchoushoujilist(Date kshijian,Date jshijian);
     
     void updatesanhu();
+    
+    List querydaoruidlist();
+    
+    void deletedaoruid(String daoruid);
 }

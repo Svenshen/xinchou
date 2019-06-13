@@ -193,4 +193,7 @@ public class Shoujishuju implements Serializable {
     
     @Column
     String shoujijigou;
+    
+    @Column
+    String daoruid;
 }

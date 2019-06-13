@@ -7,10 +7,14 @@
 
 package tech.wetech.admin.szh.xinchou.service;
 
+import java.util.Date;
 import java.util.List;
+import tech.wetech.admin.modules.system.po.User;
 import tech.wetech.admin.szh.xinchou.domain.Xinchoufangan;
 import tech.wetech.admin.szh.xinchou.domain.Xinchoushuju;
 import tech.wetech.admin.szh.xinchou.domain.XinchoushujuId;
+import tech.wetech.admin.szh.xinchou.vo.ShoujixinchouVO;
+import tech.wetech.admin.szh.xinchou.vo.ToudixinchouVO;
 
 /**
  *
@@ -28,4 +32,16 @@ public interface XinchoushujuService extends XinchouIService<Xinchoushuju, Xinch
     List<Xinchoushuju> finsdxinchoubumen(Long fangan,List<Long> bumenids);
     
     List<Xinchoushuju> findxinchougeren(Long fangan,String name, Long bumenid);
+    
+    void baocunshoujixinchou(Long fanganid,Date kshijian,Date jshijian);
+    
+    void baocuntoudixinchou(Long fanganid,Date kshijian,Date jshijian);
+    
+    List<ToudixinchouVO> jisuantoudixinchou(Date kshijian,Date jshijian);
+    
+    List<ShoujixinchouVO> jisuanshoujixinchou(Date kshijian,Date jshijian);
+    
+    List gerenchaxun(Long fanganid,User user);
+    
+    List bumenchaxun(Long fanganid,User user);
 }

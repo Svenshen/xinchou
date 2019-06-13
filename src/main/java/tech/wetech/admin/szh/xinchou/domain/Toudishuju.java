@@ -72,6 +72,7 @@ public class Toudishuju implements Serializable{
     @Column
     Integer shuliang;
     
-    
+    @Column
+    String daoruid;
     
 }

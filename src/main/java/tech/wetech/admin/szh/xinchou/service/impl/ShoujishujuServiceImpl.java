@@ -37,13 +37,15 @@ public class ShoujishujuServiceImpl extends XinchouBaseService<Shoujishuju,Strin
     ShoujishujuDao shoujishujuDao;
 
     @Override
-    public void exceldaoru(MultipartFile file,String bumen) throws IOException, Exception{
+    public void exceldaoru(MultipartFile file,String bumen,String daoruid) throws IOException, Exception{
         ImportParams params = new ImportParams();
+        
         params.setTitleRows(0);
         params.setHeadRows(1);
         List<Shoujishuju>  listshoujishuju =ExcelImportUtil.importExcel(file.getInputStream(), Shoujishuju.class, params);
         listshoujishuju.forEach((j) -> {
             j.setShoujijigou(bumen);
+            j.setDaoruid(daoruid);
         });
         shoujishujuDao.saveAll(listshoujishuju);
         updatesanhu();
@@ -89,6 +91,16 @@ public class ShoujishujuServiceImpl extends XinchouBaseService<Shoujishuju,Strin
     
     public void updatesanhu() {
         shoujishujuDao.updatesanhu();
+    }
+
+    @Override
+    public List<String> querydaoruidlist() {
+        return shoujishujuDao.querydaoruidlist();
+    }
+
+    @Override
+    public void deletedaoruid(String daoruid) {
+        shoujishujuDao.deleteByDaoruid(daoruid);
     }
 
     

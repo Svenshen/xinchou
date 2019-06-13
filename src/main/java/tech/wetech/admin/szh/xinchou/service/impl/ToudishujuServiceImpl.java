@@ -36,7 +36,7 @@ public class ToudishujuServiceImpl extends XinchouBaseService<Toudishuju,Toudish
     ToudishujuDao toudishujuDao;
 
     @Override
-    public void exceldaoru(MultipartFile file, Long bumen,Long yewu,Date shijian) throws IOException, Exception {
+    public void exceldaoru(MultipartFile file, Long bumen,Long yewu,Date shijian,String daoruid) throws IOException, Exception {
         Calendar cal=Calendar.getInstance();
         cal.setTime(shijian);
         cal.set(Calendar.DAY_OF_MONTH, 1);
@@ -53,6 +53,7 @@ public class ToudishujuServiceImpl extends XinchouBaseService<Toudishuju,Toudish
             j.setBumenid(bumen);
             j.setYewuid(yewu);
             j.setShijian(shijian);
+            j.setDaoruid(daoruid);
         }
         toudishujuDao.saveAll(listtoudishuju);
     }
@@ -68,6 +69,16 @@ public class ToudishujuServiceImpl extends XinchouBaseService<Toudishuju,Toudish
     @Transactional
     public void deleteheji() {
         toudishujuDao.deleteByToudiyuan("合计");
+    }
+
+    @Override
+    public List<String> querydaoruidlist() {
+        return toudishujuDao.querydaoruidlist();
+    }
+
+    @Override
+    public void deletedaoruid(String daoruid) {
+        toudishujuDao.deleteByDaoruid(daoruid);
     }
     
     

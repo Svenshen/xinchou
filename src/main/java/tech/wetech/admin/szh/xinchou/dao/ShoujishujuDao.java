@@ -47,11 +47,19 @@ public interface ShoujishujuDao extends  JpaRepository<Shoujishuju,String>{
                     " where a.shoujishijian between :kshijian and :jshijian" +
                     " group by b.shoujileibieid,c.leibieid,a.shoujiyuan,a.shoujijigou " +
                     " order by a.shoujijigou,a.shoujiyuan",nativeQuery = true)        
-    
     List<Object[]> queryshoujixinchoulist(@Param("kshijian") Date kshijian,@Param("jshijian") Date jshijian);
     
     @Transactional
     @Modifying
     @Query(value = "update #{#entityName} set kehudaima = '-1' , kehumingcheng = '散户空白' where kehudaima is null",nativeQuery = true)
     int updatesanhu();
+    
+    @Query(value = "select daoruid from #{#entityName} group by daoruid")     
+    List<String> querydaoruidlist();
+    
+    @Transactional
+    int deleteByDaoruid(String daoruid);
+    
+    
+    
 }

@@ -23,9 +23,13 @@ import tech.wetech.admin.szh.xinchou.domain.ToudishujuId;
 public interface ToudishujuService extends XinchouIService<Toudishuju,ToudishujuId>{
 
     
-    public void exceldaoru(MultipartFile file,Long bumen,Long yewu,Date shijian) throws IOException,Exception;
+    public void exceldaoru(MultipartFile file,Long bumen,Long yewu,Date shijian,String daoruid) throws IOException,Exception;
     
     List<Toudishuju> getshuju(Date kshijian,Date jshijian);
     
     void deleteheji();
+    
+    List querydaoruidlist();
+    
+    void deletedaoruid(String daoruid);
 }

@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import tech.wetech.admin.core.annotation.SystemLog;
 import tech.wetech.admin.core.utils.Result;
 import tech.wetech.admin.core.utils.ResultCodeEnum;
 import tech.wetech.admin.modules.system.po.Organization;
@@ -64,7 +66,7 @@ public class XinchouJisuanshoujiController {
     @Autowired
     XinchoushujuService xinchoushujuService;
     
-    
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     
     @ModelAttribute("fanganList")
     public List fanganlist(){
@@ -81,46 +83,15 @@ public class XinchouJisuanshoujiController {
     @ResponseBody
     @PostMapping("/baocun")
     @RequiresPermissions("jisuan:shoujibaocun")
-    public Result baocun(HttpServletRequest request) throws  ParseException{
-        String kshijian = request.getParameter("kshijian");
-        String jshijian = request.getParameter("jshijian");
-        String fangan = request.getParameter("fangan");
+    @SystemLog("收寄薪酬另存")
+    public Result baocun(@RequestParam(name = "kshijian") String kshijian,@RequestParam(name = "kshijian") String jshijian,@RequestParam(name = "fangan") String fangan) throws  ParseException{
+        
         if(kshijian == null || jshijian == null || fangan == null){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);
         }
         Long fanganid = Long.valueOf(fangan);
-        xinchoushujuService.deleteshoujishuju(fanganid);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<ShoujixinchouVO> shoujixinchouVOs = shoujishujuService.queryxinchoushoujilist(sdf.parse(kshijian), sdf.parse(jshijian));
-        List<Xinchoushuju> shoujixinchouVOs1 = new ArrayList();
-        for(ShoujixinchouVO shoujixinchouvo:shoujixinchouVOs){
-            ShoujidanjiatichengId shoujidanjiatichengId = new ShoujidanjiatichengId();
-            shoujidanjiatichengId.setBumenid(shoujixinchouvo.getBumenid());
-            
-            shoujidanjiatichengId.setKehuid(shoujixinchouvo.getKehuid());
-            shoujidanjiatichengId.setYewuid(shoujixinchouvo.getYewuid());
-            shoujidanjiatichengId.setName(shoujixinchouvo.getName());
-            
-            Shoujidanjiaticheng shoujidanjiaticheng = shoujidanjiatichengService.queryById(shoujidanjiatichengId);
-            double danjia = 0.0;
-            double ticheng = 0.0;
-            if(shoujidanjiaticheng != null){
-                danjia = shoujidanjiaticheng.getDanjia();
-                ticheng = shoujidanjiaticheng.getTicheng();
-            }
-            double xinchou = 0.0;
-            xinchou = shoujixinchouvo.getJianshu()*danjia+shoujixinchouvo.getShouru()*ticheng;
-            
-            shoujixinchouvo.setBumen(getOrganizationName(shoujixinchouvo.getBumenid()));
-            shoujixinchouvo.setYewu(getYewuName(shoujixinchouvo.getYewuid()));
-            shoujixinchouvo.setKehu(getKehu(shoujixinchouvo.getKehuid()));
-            shoujixinchouvo.setDanjia(danjia);
-            shoujixinchouvo.setTicheng(ticheng);
-            shoujixinchouvo.setXinchou(xinchou);
-            shoujixinchouVOs1.add(new Xinchoushuju(shoujixinchouvo,fanganid));
-        }
-        xinchoushujuService.saveAndupdateAll(shoujixinchouVOs1);
         
+        xinchoushujuService.baocunshoujixinchou(fanganid, sdf.parse(kshijian), sdf.parse(jshijian));
         return Result.success();
     }
     
@@ -133,60 +104,13 @@ public class XinchouJisuanshoujiController {
         if(kshijian == null || jshijian == null){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<ShoujixinchouVO> shoujixinchouVOs = shoujishujuService.queryxinchoushoujilist(sdf.parse(kshijian), sdf.parse(jshijian));
-        List<ShoujixinchouVO> shoujixinchouVOs1 = new ArrayList();
-        String xingming = "";
-        Long bumen = 0L;
-        double xinchouheji = 0.0;
-        for(ShoujixinchouVO shoujixinchouvo:shoujixinchouVOs){
-            if(xingming.equals("") && bumen == 0L && xinchouheji == 0.0){
-                xingming = shoujixinchouvo.getName();
-                bumen = shoujixinchouvo.getBumenid();
-            }else{
-                if(!xingming.equals(shoujixinchouvo.getName()) || bumen != shoujixinchouvo.getBumenid()){
-                    ShoujixinchouVO shoujixinchouVO = new ShoujixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", -1L, "", 0, 0, 0, 0, xinchouheji);
-                    shoujixinchouVOs1.add(shoujixinchouVO);
-                    xinchouheji = 0.0;
-                    xingming = shoujixinchouvo.getName();
-                    bumen = shoujixinchouvo.getBumenid();
-                }
-            }
-            ShoujidanjiatichengId shoujidanjiatichengId = new ShoujidanjiatichengId();
-            shoujidanjiatichengId.setBumenid(shoujixinchouvo.getBumenid());
-            
-            shoujidanjiatichengId.setKehuid(shoujixinchouvo.getKehuid());
-            shoujidanjiatichengId.setYewuid(shoujixinchouvo.getYewuid());
-            shoujidanjiatichengId.setName(shoujixinchouvo.getName());
-            
-            Shoujidanjiaticheng shoujidanjiaticheng = shoujidanjiatichengService.queryById(shoujidanjiatichengId);
-            double danjia = 0.0;
-            double ticheng = 0.0;
-            if(shoujidanjiaticheng != null){
-                danjia = shoujidanjiaticheng.getDanjia();
-                ticheng = shoujidanjiaticheng.getTicheng();
-            }
-            double xinchou = 0.0;
-            xinchou = shoujixinchouvo.getJianshu()*danjia+shoujixinchouvo.getShouru()*ticheng;
-            xinchouheji += xinchou;
-            shoujixinchouvo.setBumen(getOrganizationName(shoujixinchouvo.getBumenid()));
-            shoujixinchouvo.setYewu(getYewuName(shoujixinchouvo.getYewuid()));
-            shoujixinchouvo.setKehu(getKehu(shoujixinchouvo.getKehuid()));
-            shoujixinchouvo.setDanjia(danjia);
-            shoujixinchouvo.setTicheng(ticheng);
-            shoujixinchouvo.setXinchou(xinchou);
-            
-//            ShoujixinchouVO shoujixinchouVO = new ShoujixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
-            shoujixinchouVOs1.add(shoujixinchouvo);
-        }
-        ShoujixinchouVO shoujixinchouVO = new ShoujixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", -1L, "", 0, 0, 0, 0, xinchouheji);
-        shoujixinchouVOs1.add(shoujixinchouVO);
-        return Result.success(shoujixinchouVOs1);
+        
+        return Result.success(xinchoushujuService.jisuanshoujixinchou(sdf.parse(kshijian), sdf.parse(jshijian)));
     }
     
     
     
-    private String getOrganizationName(Long organizationId) {
+    public String getOrganizationName(Long organizationId) {
         if(organizationId == null){
             return "";
         }
@@ -197,7 +121,7 @@ public class XinchouJisuanshoujiController {
         return organization.getName();
     }
     
-    private String getYewuName(Long yewuid) {
+    public String getYewuName(Long yewuid) {
         if(yewuid == null){
             return "未知业务1";
         }
@@ -208,7 +132,7 @@ public class XinchouJisuanshoujiController {
         return shoujileibie.getName();
     }
     
-    private String getKehu(Long kehuid){
+    public String getKehu(Long kehuid){
         if(kehuid == null){
             kehuid = 1L;
         }

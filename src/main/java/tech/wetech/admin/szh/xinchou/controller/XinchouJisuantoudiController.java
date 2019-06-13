@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import tech.wetech.admin.core.annotation.SystemLog;
 import tech.wetech.admin.core.utils.Result;
 import tech.wetech.admin.core.utils.ResultCodeEnum;
 import tech.wetech.admin.modules.system.po.Organization;
@@ -62,6 +63,8 @@ public class XinchouJisuantoudiController {
     @Autowired
     XinchoushujuService xinchoushujuService;
     
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    
     @ModelAttribute("fanganList")
     public List fanganlist(){
         return xinchoufanganService.queryAll();
@@ -76,86 +79,30 @@ public class XinchouJisuantoudiController {
     @ResponseBody
     @GetMapping("/list")
     @RequiresPermissions("jisuan:toudi")
-    public Result queryList(HttpServletRequest request) throws  ParseException{
+    public Result<List<ToudixinchouVO>> queryList(HttpServletRequest request) throws  ParseException{
         String kshijian = request.getParameter("kshijian");
         String jshijian = request.getParameter("jshijian");
         if(kshijian == null || jshijian == null){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<ToudixinchouVO> toudixinchouVOs = new ArrayList();
-        List<Toudishuju> toudishujus = toudishujuService.getshuju(sdf.parse(kshijian), sdf.parse(jshijian));
-        String xingming = "";
-        Long bumen = 0L;
-        double xinchouheji = 0.0;
-        for(Toudishuju toudishuju:toudishujus){
-            if(xingming.equals("") && bumen == 0L && xinchouheji == 0.0){
-                xingming = toudishuju.getToudiyuan();
-                bumen = toudishuju.getBumenid();
-            }else{
-                if(!xingming.equals(toudishuju.getToudiyuan()) || bumen != toudishuju.getBumenid()){
-                    //ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), "合计", 0, xinchouheji);
-                    ToudixinchouVO toudixinchouVO =  new ToudixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", 0.0, 0, xinchouheji);
-                    toudixinchouVOs.add(toudixinchouVO);
-                    xinchouheji = 0.0;
-                    xingming = toudishuju.getToudiyuan();
-                    bumen = toudishuju.getBumenid();
-                }
-            }
-            
-            ToudidanjiaId toudidanjiaId = new ToudidanjiaId();
-            toudidanjiaId.setBumenid(toudishuju.getBumenid());
-            toudidanjiaId.setName(toudishuju.getToudiyuan());
-            toudidanjiaId.setYewuid(toudishuju.getYewuid());
-            Toudidanjia toudidanjia = toudidanjiaService.queryById(toudidanjiaId);
-            double danjia = 0.0;
-            if(toudidanjia != null){
-                danjia = toudidanjia.getDanjia();
-            }
-            double xinchou = 0.0;
-            xinchou = toudishuju.getShuliang()*danjia;
-            xinchouheji += xinchou;
-            ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
-            toudixinchouVOs.add(toudixinchouVO);
-        }
-        ToudixinchouVO toudixinchouVO =  new ToudixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", 0.0, 0, xinchouheji);
-        toudixinchouVOs.add(toudixinchouVO);
-        return Result.success(toudixinchouVOs);
+        
+        
+        return Result.success(xinchoushujuService.jisuantoudixinchou(sdf.parse(kshijian), sdf.parse(jshijian)));
     }
     
     
     @ResponseBody
     @PostMapping("/baocun")
     @RequiresPermissions("jisuan:toudibaocun")
-    public Result<List<ToudixinchouVO>> baocun(HttpServletRequest request) throws  ParseException{
-        String kshijian = request.getParameter("kshijian");
-        String jshijian = request.getParameter("jshijian");
-        String fangan = request.getParameter("fangan");
+    @SystemLog("投递收薪酬另存")
+    public Result<List<ToudixinchouVO>> baocun(@RequestParam(name = "kshijian") String kshijian,@RequestParam(name = "kshijian") String jshijian,@RequestParam(name = "fangan") String fangan) throws  ParseException{
+        
         if(kshijian == null || jshijian == null || fangan == null){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);
         }
         Long fanganid = Long.valueOf(fangan);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<Xinchoushuju> toudixinchouVOs = new ArrayList();
-        List<Toudishuju> toudishujus = toudishujuService.getshuju(sdf.parse(kshijian), sdf.parse(jshijian));
         
-        for(Toudishuju toudishuju:toudishujus){
-            ToudidanjiaId toudidanjiaId = new ToudidanjiaId();
-            toudidanjiaId.setBumenid(toudishuju.getBumenid());
-            toudidanjiaId.setName(toudishuju.getToudiyuan());
-            toudidanjiaId.setYewuid(toudishuju.getYewuid());
-            Toudidanjia toudidanjia = toudidanjiaService.queryById(toudidanjiaId);
-            double danjia = 0.0;
-            if(toudidanjia != null){
-                danjia = toudidanjia.getDanjia();
-            }
-            double xinchou = 0.0;
-            xinchou = toudishuju.getShuliang()*danjia;
-            
-            ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
-            toudixinchouVOs.add(new Xinchoushuju(toudixinchouVO,fanganid));
-        }
-        xinchoushujuService.saveAndupdateAll(toudixinchouVOs);
+        xinchoushujuService.baocuntoudixinchou(fanganid, sdf.parse(kshijian), sdf.parse(jshijian));
         return Result.success();
     }
     

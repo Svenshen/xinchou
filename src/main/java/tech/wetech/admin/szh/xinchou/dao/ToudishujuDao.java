@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import tech.wetech.admin.szh.xinchou.domain.Shoujishuju;
 import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
 import tech.wetech.admin.szh.xinchou.domain.ToudishujuId;
@@ -33,4 +34,10 @@ public interface ToudishujuDao extends  JpaRepository<Toudishuju,ToudishujuId>{
     List<Toudishuju> findByShijian(@Param("kshijian") Date kshijian,@Param("jshijian") Date jshijian);
     
     void deleteByToudiyuan(String toudiyuan);
+    
+    @Query(value = "select daoruid from #{#entityName} group by daoruid")     
+    List<String> querydaoruidlist();
+    
+    @Transactional
+    int deleteByDaoruid(String daoruid);
 }

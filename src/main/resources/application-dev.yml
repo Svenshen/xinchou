@@ -75,4 +75,4 @@ spring:
         show-sql: false
         
     thymeleaf:
-        cache: false
+        cache: true
