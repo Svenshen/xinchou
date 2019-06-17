@@ -25,6 +25,7 @@ import tech.wetech.admin.szh.xinchou.domain.Shoujikehuleibie;
 import tech.wetech.admin.szh.xinchou.domain.Shoujileibie;
 import tech.wetech.admin.szh.xinchou.domain.Toudidanjia;
 import tech.wetech.admin.szh.xinchou.domain.ToudidanjiaId;
+import tech.wetech.admin.szh.xinchou.domain.Toudijishu;
 import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
 import tech.wetech.admin.szh.xinchou.domain.Xinchoushuju;
 import tech.wetech.admin.szh.xinchou.domain.XinchoushujuId;
@@ -33,6 +34,7 @@ import tech.wetech.admin.szh.xinchou.service.ShoujikehuleibieService;
 import tech.wetech.admin.szh.xinchou.service.ShoujileibieService;
 import tech.wetech.admin.szh.xinchou.service.ShoujishujuService;
 import tech.wetech.admin.szh.xinchou.service.ToudidanjiaService;
+import tech.wetech.admin.szh.xinchou.service.ToudijishuService;
 import tech.wetech.admin.szh.xinchou.service.ToudishujuService;
 import tech.wetech.admin.szh.xinchou.service.XinchoushujuService;
 import tech.wetech.admin.szh.xinchou.vo.ShoujixinchouVO;
@@ -63,6 +65,8 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
     OrganizationService organizationService;
     @Autowired
     ShoujikehuleibieService shoujikehuleibieService;
+    @Autowired
+    ToudijishuService toudijishuService;
     
     @Override
     public void deleteshoujishuju(Long fangan) {
@@ -123,51 +127,31 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
     @Transactional
     public void baocuntoudixinchou(Long fanganid,Date kshijian,Date jshijian){
         deletetoudishuju(fanganid);
-        
         List<Xinchoushuju> toudixinchouVOs = new ArrayList();
-        List<Toudishuju> toudishujus = toudishujuService.getshuju(kshijian, jshijian);
-        
-        for(Toudishuju toudishuju:toudishujus){
-            ToudidanjiaId toudidanjiaId = new ToudidanjiaId();
-            toudidanjiaId.setBumenid(toudishuju.getBumenid());
-            toudidanjiaId.setName(toudishuju.getToudiyuan());
-            toudidanjiaId.setYewuid(toudishuju.getYewuid());
-            Toudidanjia toudidanjia = toudidanjiaService.queryById(toudidanjiaId);
-            double danjia = 0.0;
-            if(toudidanjia != null){
-                danjia = toudidanjia.getDanjia();
-            }
-            double xinchou = 0.0;
-            xinchou = toudishuju.getShuliang()*danjia;
-            
-            ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
-            toudixinchouVOs.add(new Xinchoushuju(toudixinchouVO,fanganid));
+        for(ToudixinchouVO t :gettoudixinchou(kshijian,jshijian)){
+            toudixinchouVOs.add(new Xinchoushuju(t,fanganid));
         }
         saveAndupdateAll(toudixinchouVOs);
     }
 
-    @Override
-    public List<ToudixinchouVO> jisuantoudixinchou(Date kshijian, Date jshijian) {
+//    @Override
+//    @Transactional
+//    public void saveAndupdateAll(List<Xinchoushuju> listentity) {
+//        xinchoushujuDao.saveAll(listentity);
+//    }
+
+    private List<ToudixinchouVO> gettoudixinchou(Date kshijian,Date jshijian){
+        
         List<ToudixinchouVO> toudixinchouVOs = new ArrayList();
         List<Toudishuju> toudishujus = toudishujuService.getshuju(kshijian, jshijian);
-        String xingming = "";
-        Long bumen = 0L;
-        double xinchouheji = 0.0;
+        
         for(Toudishuju toudishuju:toudishujus){
-            if(xingming.equals("") && bumen == 0L && xinchouheji == 0.0){
-                xingming = toudishuju.getToudiyuan();
-                bumen = toudishuju.getBumenid();
-            }else{
-                if(!xingming.equals(toudishuju.getToudiyuan()) || bumen != toudishuju.getBumenid()){
-                    //ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), "合计", 0, xinchouheji);
-                    ToudixinchouVO toudixinchouVO =  new ToudixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", 0.0, 0, xinchouheji);
-                    toudixinchouVOs.add(toudixinchouVO);
-                    xinchouheji = 0.0;
-                    xingming = toudishuju.getToudiyuan();
-                    bumen = toudishuju.getBumenid();
-                }
+            Toudijishu toudijishu = toudijishuService.queryById(toudishuju.getYewuid());
+            int jishu = 0;
+            if(toudijishu != null){
+                jishu = toudijishu.getJishu();
             }
-            
+            toudishuju.setShuliang(toudishuju.getShuliang()-jishu);
             ToudidanjiaId toudidanjiaId = new ToudidanjiaId();
             toudidanjiaId.setBumenid(toudishuju.getBumenid());
             toudidanjiaId.setName(toudishuju.getToudiyuan());
@@ -179,9 +163,35 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
             }
             double xinchou = 0.0;
             xinchou = toudishuju.getShuliang()*danjia;
-            xinchouheji += xinchou;
             ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
             toudixinchouVOs.add(toudixinchouVO);
+        }
+        
+        return toudixinchouVOs;
+    }
+    
+    @Override
+    public List<ToudixinchouVO> jisuantoudixinchou(Date kshijian, Date jshijian) {
+        String xingming = "";
+        Long bumen = 0L;
+        double xinchouheji = 0.0;
+        List<ToudixinchouVO> toudixinchouVOs = new ArrayList();
+        for(ToudixinchouVO t :gettoudixinchou(kshijian,jshijian)){
+            if(xingming.equals("") && bumen == 0L && xinchouheji == 0.0){
+                xingming = t.getName();
+                bumen = t.getBumenid();
+            }else{
+                if(!xingming.equals(t.getName()) || bumen != t.getBumenid()){
+                    ToudixinchouVO toudixinchouVO =  new ToudixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", 0.0, 0, xinchouheji);
+                    toudixinchouVOs.add(toudixinchouVO);
+                    xinchouheji = 0.0;
+                    xingming = t.getName();
+                    bumen = t.getBumenid();
+                }
+            }
+            toudixinchouVOs.add(t);
+            xinchouheji += t.getXinchou();
+            
         }
         ToudixinchouVO toudixinchouVO =  new ToudixinchouVO(bumen, getOrganizationName(bumen), xingming, -1L, "合计", 0.0, 0, xinchouheji);
         toudixinchouVOs.add(toudixinchouVO);

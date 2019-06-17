@@ -95,13 +95,14 @@ public class XinchouJisuantoudiController {
     @PostMapping("/baocun")
     @RequiresPermissions("jisuan:toudibaocun")
     @SystemLog("投递收薪酬另存")
-    public Result<List<ToudixinchouVO>> baocun(@RequestParam(name = "kshijian") String kshijian,@RequestParam(name = "kshijian") String jshijian,@RequestParam(name = "fangan") String fangan) throws  ParseException{
+    public Result<List<ToudixinchouVO>> baocun(@RequestParam(name = "kshijian") String kshijian,@RequestParam(name = "jshijian") String jshijian,@RequestParam(name = "fangan") String fangan) throws  ParseException{
         
         if(kshijian == null || jshijian == null || fangan == null){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);
         }
         Long fanganid = Long.valueOf(fangan);
-        
+        System.out.println(fanganid);
+        System.out.println(kshijian+jshijian);
         xinchoushujuService.baocuntoudixinchou(fanganid, sdf.parse(kshijian), sdf.parse(jshijian));
         return Result.success();
     }

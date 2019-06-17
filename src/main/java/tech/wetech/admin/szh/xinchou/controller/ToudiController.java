@@ -124,7 +124,7 @@ public class ToudiController {
         
         Toudishuju chaxunshouji = new Toudishuju();
         chaxunshouji.setDaoruid(chaxunid);
-        Pageable pageable = PageRequest.of(pagenumber, pasgesize);
+        Pageable pageable = PageRequest.of(pagenumber-1, pasgesize);
         Page<Toudishuju> page = toudishujuService.queryList(chaxunshouji, pageable);
         List<Toudishuju> shoujishus = page.getContent();
         List<ToudishujuVO> shoujishujuVOs = new ArrayList();

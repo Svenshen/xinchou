@@ -84,7 +84,7 @@ public class XinchouJisuanshoujiController {
     @PostMapping("/baocun")
     @RequiresPermissions("jisuan:shoujibaocun")
     @SystemLog("收寄薪酬另存")
-    public Result baocun(@RequestParam(name = "kshijian") String kshijian,@RequestParam(name = "kshijian") String jshijian,@RequestParam(name = "fangan") String fangan) throws  ParseException{
+    public Result baocun(@RequestParam(name = "kshijian") String kshijian,@RequestParam(name = "jshijian") String jshijian,@RequestParam(name = "fangan") String fangan) throws  ParseException{
         
         if(kshijian == null || jshijian == null || fangan == null){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);

@@ -110,7 +110,7 @@ public class ShoujiController {
         
         Shoujishuju chaxunshouji = new Shoujishuju();
         chaxunshouji.setDaoruid(chaxunid);
-        Pageable pageable = PageRequest.of(pagenumber, pasgesize);
+        Pageable pageable = PageRequest.of(pagenumber-1, pasgesize);
         Page<Shoujishuju> page = shoujishujuService.queryList(chaxunshouji, pageable);
         List<Shoujishuju> shoujishus = page.getContent();
         List<ShoujishujuVO> shoujishujuVOs = new ArrayList();

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * @author cjbi
@@ -31,7 +32,7 @@ public class User {
      * 用户名
      */
     @NotBlank(message = "用户名不能为空")
-    @Min(value = 3, message = "用户名不能低于3位")
+    @Length(min = 3, message = "用户名不能低于3位")
     private String username;
     
     @Setter
@@ -43,7 +44,7 @@ public class User {
      * 密码
      */
     @NotBlank(message = "密码不能为空", groups = UserCreateChecks.class)
-    @Min(value = 6, message = "密码不能低于6位", groups = UserCreateChecks.class)
+    @Length(min = 6, message = "密码不能低于6位", groups = UserCreateChecks.class)
     private String password;
     /**
      * 加密密码的盐
