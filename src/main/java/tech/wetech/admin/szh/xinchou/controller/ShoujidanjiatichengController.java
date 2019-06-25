@@ -128,8 +128,7 @@ public class ShoujidanjiatichengController {
     @RequiresPermissions("shoujidanjia:update")
     @SystemLog("收寄单价修改")
     public Result update(ShoujidanjiatichengVO shoujidanjiatichengVO)  {
-        System.out.println(shoujidanjiatichengVO);
-        System.out.println(new Shoujidanjiaticheng(shoujidanjiatichengVO));
+        
         shoujidanjiatichengService.update(new Shoujidanjiaticheng(shoujidanjiatichengVO));
         return Result.success();
     }
