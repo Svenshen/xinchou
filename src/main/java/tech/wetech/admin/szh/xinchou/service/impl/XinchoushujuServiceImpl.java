@@ -262,7 +262,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
                 xingming = shoujixinchouvo.getName();
                 bumen = shoujixinchouvo.getBumen();
             }else{
-                if(!xingming.equals(shoujixinchouvo.getName()) || bumen.equals(shoujixinchouvo.getBumen())){
+                if(!xingming.equals(shoujixinchouvo.getName()) || !bumen.equals(shoujixinchouvo.getBumen())){
                     Xinchoushuju xinchoushujux = new Xinchoushuju(fanganid, -1L, bumen, xingming, "合计", "", "", 0, 0, 0, 0,  xinchouheji);
                     xinchoushujus1.add(xinchoushujux);
                     xinchouheji = 0.0;
@@ -270,7 +270,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
                     bumen = shoujixinchouvo.getBumen();
                 }
             }
-            
+            xinchouheji+= shoujixinchouvo.getXinchou();
             xinchoushujus1.add(shoujixinchouvo);
         }
         Xinchoushuju xinchoushujux = new Xinchoushuju(fanganid, -1L, bumen, xingming, "合计", "", "", 0, 0, 0, 0,  xinchouheji);
@@ -290,7 +290,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
                 xingming = shoujixinchouvo.getName();
                 bumen = shoujixinchouvo.getBumen();
             }else{
-                if(!xingming.equals(shoujixinchouvo.getName()) || bumen.equals(shoujixinchouvo.getBumen())){
+                if(!xingming.equals(shoujixinchouvo.getName()) || !bumen.equals(shoujixinchouvo.getBumen())){
                     Xinchoushuju xinchoushujux = new Xinchoushuju(fanganid, -1L, bumen, xingming, "合计", "", "", 0, 0, 0, 0,  xinchouheji);
                     xinchoushujus1.add(xinchoushujux);
                     xinchouheji = 0.0;
@@ -298,7 +298,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
                     bumen = shoujixinchouvo.getBumen();
                 }
             }
-            
+            xinchouheji+= shoujixinchouvo.getXinchou();
             xinchoushujus1.add(shoujixinchouvo);
         }
         Xinchoushuju xinchoushujux = new Xinchoushuju(fanganid, -1L, bumen, xingming, "合计", "", "", 0, 0, 0, 0,  xinchouheji);
