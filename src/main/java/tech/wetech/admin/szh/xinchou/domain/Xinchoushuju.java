@@ -49,6 +49,7 @@ public class Xinchoushuju implements Serializable{
     @Column
     String zhonglei;
     
+    @Id
     @Column
     String yewu;
            

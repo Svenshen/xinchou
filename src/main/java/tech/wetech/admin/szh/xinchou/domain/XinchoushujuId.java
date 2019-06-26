@@ -28,5 +28,7 @@ public class XinchoushujuId implements Serializable{
     String name;
     
     String zhonglei;
+    
+    String yewu;
 
 }
