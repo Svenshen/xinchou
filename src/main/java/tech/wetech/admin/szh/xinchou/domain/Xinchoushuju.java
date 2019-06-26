@@ -38,19 +38,19 @@ public class Xinchoushuju implements Serializable{
     Long bumenid;
     
     @Id
-    @Column
+    @Column(length = 50)
     String bumen;
     
     @Id
-    @Column
+    @Column(length = 50)
     String name;
     
     @Id
-    @Column
+    @Column(length = 50)
     String zhonglei;
     
     @Id
-    @Column
+    @Column(length = 50)
     String yewu;
            
     @Column
