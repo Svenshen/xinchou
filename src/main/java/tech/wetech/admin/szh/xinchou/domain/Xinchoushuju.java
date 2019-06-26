@@ -52,8 +52,9 @@ public class Xinchoushuju implements Serializable{
     @Id
     @Column(length = 50)
     String yewu;
-           
-    @Column
+    
+    @Id
+    @Column(length = 50)
     String kehu;
     
     @Column

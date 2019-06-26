@@ -31,4 +31,5 @@ public class XinchoushujuId implements Serializable{
     
     String yewu;
 
+    String kehu;
 }
