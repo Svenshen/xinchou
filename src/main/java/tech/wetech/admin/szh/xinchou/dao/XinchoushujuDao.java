@@ -33,10 +33,10 @@ public interface XinchoushujuDao extends  JpaRepository<Xinchoushuju,Xinchoushuj
     @Query(value = "delete from #{#entityName} where fanganid = :fangan and zhonglei = :zhonglei",nativeQuery = true)
     int deleteshuju(@Param("zhonglei")String zhonglei,@Param("fangan")Long fangan);
     
-    @Query(value = "select * from #{#entityName} where fanganid = :fangan and bumenid in (:bumenids)",nativeQuery = true)
+    @Query(value = "select * from #{#entityName} where fanganid = :fangan and bumenid in (:bumenids) order by bumenid,name",nativeQuery = true)
     List<Xinchoushuju> findxinchoubumen(@Param("fangan")Long fangan,@Param("bumenids") List<Long> bumenids);
     
-    @Query(value = "select * from #{#entityName} where fanganid = :fangan and name = :name and bumenid = :bumenid",nativeQuery = true)
+    @Query(value = "select * from #{#entityName} where fanganid = :fangan and name = :name and bumenid = :bumenid order by bumenid,name",nativeQuery = true)
     List<Xinchoushuju> findxinchougeren(@Param("fangan")Long fangan,@Param("name") String name,@Param("bumenid") Long bumenid);
     
 }
