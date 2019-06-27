@@ -70,7 +70,7 @@ public class XinchouController {
     @ResponseBody
     @GetMapping("/bumen/list")
     @RequiresPermissions("chaxun:bumen")
-    @SystemLog("薪酬查询部门")
+    //@SystemLog("薪酬查询部门")
     public Result<List<Xinchoushuju>> querybumenList(@RequestParam(name = "fangan") String fangan) {
         if(fangan == null ){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);
@@ -86,7 +86,7 @@ public class XinchouController {
     @ResponseBody
     @GetMapping("/geren/list")
     @RequiresPermissions("chaxun:geren")
-    @SystemLog("薪酬查询个人")
+    //@SystemLog("薪酬查询个人")
     public Result<List<Xinchoushuju>> querygerenList(@RequestParam(name = "fangan") String fangan) {
         if(fangan == null ){
             return Result.failure(ResultCodeEnum.BAD_REQUEST);
