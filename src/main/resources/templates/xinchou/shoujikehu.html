@@ -231,6 +231,7 @@
         $table.bootstrapTable({
             url: CONTEXT_PATH + '/xinchou/shouji/kehu/list',
             idField: 'id',
+            detailView: false,
             columns: [
                 {field: 'state', checkbox: true},
                 {field: 'kehudaima', title: '客户代码', sortable: true, halign: 'left',visible:false},

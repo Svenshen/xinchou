@@ -253,6 +253,7 @@
         $table.bootstrapTable({
             url: CONTEXT_PATH + '/xinchou/shouji/danjia/list',
             idField: 'id',
+            detailView: false,
             columns: [
                 {field: 'state', checkbox: true},
                 {field: 'bumenid', title: '部门id', sortable: true, halign: 'left',visible:false},

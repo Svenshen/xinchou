@@ -240,6 +240,7 @@
         $table.bootstrapTable({
             url: CONTEXT_PATH + '/xinchou/toudi/danjia/list',
             idField: 'id',
+            detailView: false,
             columns: [
                 {field: 'state', checkbox: true},
                 {field: 'buimenid', title: '部门id', sortable: true, halign: 'left',visible:false},

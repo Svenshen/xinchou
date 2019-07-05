@@ -249,6 +249,7 @@
         $table.bootstrapTable({
             url: CONTEXT_PATH + '/user/list',
             idField: 'id',
+            detailView: false,
             columns: [
                 {field: 'state', checkbox: true},
                 {field: 'id', title: '编号', sortable: true, halign: 'left'},
