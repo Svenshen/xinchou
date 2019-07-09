@@ -27,6 +27,7 @@ import tech.wetech.admin.szh.xinchou.domain.Toudidanjia;
 import tech.wetech.admin.szh.xinchou.domain.ToudidanjiaId;
 import tech.wetech.admin.szh.xinchou.domain.Toudijishu;
 import tech.wetech.admin.szh.xinchou.domain.Toudishuju;
+import tech.wetech.admin.szh.xinchou.domain.Toudiyewu;
 import tech.wetech.admin.szh.xinchou.domain.Xinchoushuju;
 import tech.wetech.admin.szh.xinchou.domain.XinchoushujuId;
 import tech.wetech.admin.szh.xinchou.service.ShoujidanjiatichengService;
@@ -36,6 +37,7 @@ import tech.wetech.admin.szh.xinchou.service.ShoujishujuService;
 import tech.wetech.admin.szh.xinchou.service.ToudidanjiaService;
 import tech.wetech.admin.szh.xinchou.service.ToudijishuService;
 import tech.wetech.admin.szh.xinchou.service.ToudishujuService;
+import tech.wetech.admin.szh.xinchou.service.ToudiyewuService;
 import tech.wetech.admin.szh.xinchou.service.XinchoushujuService;
 import tech.wetech.admin.szh.xinchou.vo.ShoujixinchouVO;
 import tech.wetech.admin.szh.xinchou.vo.ToudixinchouVO;
@@ -67,6 +69,8 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
     ShoujikehuleibieService shoujikehuleibieService;
     @Autowired
     ToudijishuService toudijishuService;
+    @Autowired
+    ToudiyewuService toudiyewuService;
     
     @Override
     public void deleteshoujishuju(Long fangan) {
@@ -113,7 +117,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
             xinchou = shoujixinchouvo.getJianshu()*danjia+shoujixinchouvo.getShouru()*ticheng;
             
             shoujixinchouvo.setBumen(getOrganizationName(shoujixinchouvo.getBumenid()));
-            shoujixinchouvo.setYewu(getYewuName(shoujixinchouvo.getYewuid()));
+            shoujixinchouvo.setYewu(getShoujiYewuName(shoujixinchouvo.getYewuid()));
             shoujixinchouvo.setKehu(getKehu(shoujixinchouvo.getKehuid()));
             shoujixinchouvo.setDanjia(danjia);
             shoujixinchouvo.setTicheng(ticheng);
@@ -163,7 +167,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
             }
             double xinchou = 0.0;
             xinchou = toudishuju.getShuliang()*danjia;
-            ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getYewuName(toudishuju.getYewuid()), danjia, xinchou);
+            ToudixinchouVO toudixinchouVO = new ToudixinchouVO(toudishuju,  getOrganizationName(toudishuju.getBumenid()), getToudiYewuName(toudishuju.getYewuid()), danjia, xinchou);
             toudixinchouVOs.add(toudixinchouVO);
         }
         
@@ -236,7 +240,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
             xinchou = shoujixinchouvo.getJianshu()*danjia+shoujixinchouvo.getShouru()*ticheng;
             xinchouheji += xinchou;
             shoujixinchouvo.setBumen(getOrganizationName(shoujixinchouvo.getBumenid()));
-            shoujixinchouvo.setYewu(getYewuName(shoujixinchouvo.getYewuid()));
+            shoujixinchouvo.setYewu(getShoujiYewuName(shoujixinchouvo.getYewuid()));
             shoujixinchouvo.setKehu(getKehu(shoujixinchouvo.getKehuid()));
             shoujixinchouvo.setDanjia(danjia);
             shoujixinchouvo.setTicheng(ticheng);
@@ -333,7 +337,7 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
         return organization.getName();
     }
     
-    public String getYewuName(Long yewuid) {
+    public String getShoujiYewuName(Long yewuid) {
         if(yewuid == null){
             return "未知业务1";
         }
@@ -344,6 +348,16 @@ public class XinchoushujuServiceImpl extends XinchouBaseService<Xinchoushuju,Xin
         return shoujileibie.getName();
     }
     
+    private String getToudiYewuName(Long yewuid) {
+        if(yewuid == null){
+            return "";
+        }
+        Toudiyewu toudiyewu = toudiyewuService.queryById(yewuid);
+        if (toudiyewu == null) {
+            return "";
+        }
+        return toudiyewu.getName();
+    }
     public String getKehu(Long kehuid){
         if(kehuid == null){
             kehuid = 1L;
