@@ -58,7 +58,7 @@ spring:
             login-username: admin
             # 登录密码
             login-password: 123456
-        aop-patterns: tech.wetech.admin.modules.system.web.*
+        
         test-on-borrow: true
       
     #JPA

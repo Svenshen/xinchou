@@ -236,6 +236,7 @@ public class ShiroConfig {
     /**
      * 相当于调用SecurityUtils.setSecurityManager(securityManager)
      *
+     * @param securityManager
      * @return
      */
     @Bean

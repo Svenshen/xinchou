@@ -229,10 +229,34 @@
         </div>
     </div>
 </div>
+
+<!-- reset modal -->
+<div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetSmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteSmallModalLabel">重置密码</h4>
+            </div>
+            <div class="modal-body">
+                <form id="resetForm"></form>
+                确定要重置密码?(默认密码Wj63411185@)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" form="resetForm" class="btn btn-primary"
+                        data-action="{type:'submit',form:'#resetForm',url:'@{/user/reset-batch}',after:'$.myAction.refreshTable'}">
+                    确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="actionButtons" class="admin-hide">
 <!--    <a class="like" href="javascript:void(0)" data-toggle="tooltip" title="Like"><i class="glyphicon glyphicon-heart"></i></a>　-->
     <a shiro:hasPermission="user:update" class="edit ml10" href="javascript:void(0)" data-toggle="tooltip" title="编辑"><i class="glyphicon glyphicon-edit"></i></a>　
     <a shiro:hasPermission="user:delete" class="remove ml10" href="javascript:void(0)" data-toggle="tooltip" title="删除"><i class="glyphicon glyphicon-remove"></i></a>　
+    <a shiro:hasPermission="user:resetpassword" class="reset ml10" href="javascript:void(0)" data-toggle="tooltip" title="重置密码"><i class="glyphicon glyphicon-repeat"></i></a>　
 </div>
 <!-- zTree -->
 <div id="menuContent" class="menuContent"
@@ -316,6 +340,15 @@
                 html += '<input type="hidden" name="' + key + '" value="' + row[key] + '">';
             }
             $('#deleteForm').html(html);
+        },
+        'click .reset': function (e, value, row, index) {
+            $('#resetModal').modal('show');
+            //$('.records').html('1');
+            var html = '';
+            for (var key in row) {
+                html += '<input type="hidden" name="' + key + '" value="' + row[key] + '">';
+            }
+            $('#resetForm').html(html);
         }
     };
 

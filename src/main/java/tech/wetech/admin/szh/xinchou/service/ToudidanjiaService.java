@@ -8,6 +8,7 @@
 package tech.wetech.admin.szh.xinchou.service;
 
 import java.util.List;
+import tech.wetech.admin.modules.system.po.User;
 import tech.wetech.admin.szh.xinchou.domain.Toudidanjia;
 import tech.wetech.admin.szh.xinchou.domain.ToudidanjiaId;
 
@@ -23,4 +24,6 @@ public interface ToudidanjiaService extends XinchouIService<Toudidanjia,Toudidan
     void update(List<Toudidanjia> toudidanjias);
             
     void update(Toudidanjia toudidanjia);
+    
+    List<Toudidanjia> findbybumenList(User user);
 }

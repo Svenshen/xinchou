@@ -8,6 +8,7 @@
 package tech.wetech.admin.szh.xinchou.service;
 
 import java.util.List;
+import tech.wetech.admin.modules.system.po.User;
 import tech.wetech.admin.szh.xinchou.domain.Shoujidanjiaticheng;
 import tech.wetech.admin.szh.xinchou.domain.ShoujidanjiatichengId;
 import tech.wetech.admin.szh.xinchou.domain.Shoujikehu;
@@ -23,4 +24,6 @@ public interface ShoujidanjiatichengService extends XinchouIService<Shoujidanjia
     void update(List<Shoujidanjiaticheng> shoujidanjiatichengs);
             
     void update(Shoujidanjiaticheng shoujidanjiaticheng);
+    
+    List<Shoujidanjiaticheng> querybybumenlist(User user);
 }

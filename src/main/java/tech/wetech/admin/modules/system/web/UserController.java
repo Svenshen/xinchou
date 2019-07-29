@@ -190,5 +190,18 @@ public class UserController extends BaseCrudController<User> {
         userService.changePassword(username, password,cpassword);
         return Result.success();
     }
+    
+    @ResponseBody
+    @PostMapping("/reset-batch")
+    @RequiresPermissions("user:resetpassword")
+    @SystemLog("用户重置密码")
+    public Result resetBatchByIds(@NotNull @RequestParam("id") Object[] ids) {
+        for(Object id : ids){
+            userService.changePassword(Long.valueOf(String.valueOf(id)), "Wj63411185@");
+        }
+        
+        return Result.success();
+    }
+    
 
 }

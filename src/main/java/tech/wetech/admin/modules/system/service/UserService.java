@@ -29,6 +29,8 @@ public interface UserService extends IService<User> {
      */
     void changePassword(String username, String password,String cpassword);
     
+
+    
     /**
      * 根据用户名查找其角色
      * @param username

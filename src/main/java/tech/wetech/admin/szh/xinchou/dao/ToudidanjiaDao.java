@@ -7,7 +7,10 @@
 
 package tech.wetech.admin.szh.xinchou.dao;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tech.wetech.admin.szh.xinchou.domain.Toudidanjia;
 import tech.wetech.admin.szh.xinchou.domain.ToudidanjiaId;
@@ -21,5 +24,6 @@ import tech.wetech.admin.szh.xinchou.domain.ToudidanjiaId;
 @Repository
 public interface ToudidanjiaDao extends JpaRepository<Toudidanjia,ToudidanjiaId>{
     
-
+    @Query(value = "select * from #{#entityName} where  bumenid in (:bumenids) ",nativeQuery = true)
+    List<Toudidanjia> findbybumenlist(@Param("bumenids") List<Long> bumenids);
 }

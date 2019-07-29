@@ -9,7 +9,9 @@ package tech.wetech.admin.szh.xinchou.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,8 +75,10 @@ public class ShoujidanjiatichengController {
     @GetMapping("/list")
     @RequiresPermissions("shoujidanjia:view")
     public Result<List<ShoujidanjiatichengVO>> queryList() {
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String)subject.getPrincipal();
+        User myuser = userService.queryOne(new User().setUsername(username));
         List<Organization> organizations = organizationService.queryList(new Organization().setLeaf(true));
-        
         List<Shoujileibie> shoujiyewuleibies = shoujileibieService.queryAll();
         List<Shoujikehuleibie> shoujikehuleibies = shoujikehuleibieService.queryAll();
         List<UserVO> uservos = new ArrayList() ;
@@ -106,7 +110,8 @@ public class ShoujidanjiatichengController {
             }
         }
         List<ShoujidanjiatichengVO> shoujidanjiatichengVOs = new ArrayList() ;
-        List<Shoujidanjiaticheng> shoujidanjiatichengs =  shoujidanjiatichengService.queryAll();
+        
+        List<Shoujidanjiaticheng> shoujidanjiatichengs =  shoujidanjiatichengService.querybybumenlist(myuser);
         for(Shoujidanjiaticheng shoujidanjiaticheng:shoujidanjiatichengs){
             ShoujidanjiatichengVO shoujidanjiatichengVO = new ShoujidanjiatichengVO(shoujidanjiaticheng, getOrganizationName(shoujidanjiaticheng.getBumenid()), getYewuName(shoujidanjiaticheng.getYewuid()), getKehuName(shoujidanjiaticheng.getKehuid()));
             shoujidanjiatichengVOs.add(shoujidanjiatichengVO);
