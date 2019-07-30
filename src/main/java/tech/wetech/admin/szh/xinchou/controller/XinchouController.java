@@ -62,7 +62,7 @@ public class XinchouController {
     }
     
     @GetMapping("/geren")
-    @RequiresPermissions("chaxun:gern")
+    @RequiresPermissions("chaxun:geren")
     public String pagegeren(){
         return "xinchou/chaxungeren";
     }
