@@ -1,6 +1,6 @@
-# Wetech-Admin
+# 薪酬测算系统
 
-Wetech-Admin 是基于 Spring Boot 2.0 + Mybatis 的轻量级后台管理系统，适用于中小型项目的管理后台，支持按钮级别的权限控制，系统具有最基本的用户管理、角色管理、资源管理、组织机构管理、系统日志、代码生成器等通用性功能，企业或个人可直接在此基础上进行开发，扩展，添加各自的需求和业务功能！http://wetech.tech/wetech-admin/
+薪酬测算系统 是基于 Spring Boot 2.0 + Mybatis 的薪酬测算系统，将新一代数据导入后自动完成计算。
 
 
 ## 技术选型
@@ -9,7 +9,7 @@ Wetech-Admin 是基于 Spring Boot 2.0 + Mybatis 的轻量级后台管理系统�
 
 技术 | 名称 | 版本 | 官网
 ----|------|----|----
-Spring Boot | 应用框架 | 2.0.0.RELEASE | [https://projects.spring.io/spring-boot/](https://projects.spring.io/spring-boot/)
+Spring Boot | 应用框架 | 2.0.9.RELEASE | [https://projects.spring.io/spring-boot/](https://projects.spring.io/spring-boot/)
 MyBatis | ORM框架 | 3.2.1 |  [http://www.mybatis.org/mybatis-3/zh/index.html](http://www.mybatis.org/mybatis-3/zh/index.html)
 Hibernate | ORM框架 | 5.2.14 |  
 Mapper | MyBatis 通用 Mapper4 | 4.0.0 |  [https://gitee.com/free/Mapper](https://gitee.com/free/Mapper)
@@ -49,71 +49,3 @@ ZTree | jQuery树插件 | 3.5.29 |  [http://www.treejs.cn](http://www.treejs.cn)
 - 运行WetechAdminApplication类
 - 项目访问路径：http://localhost:8888/wetech-admin Swagger文档路径：http://localhost:8888/wetech-admin/swagger-ui.html
 - 账号密码：admin/123456
-
-## 预览图
-
-> 登陆界面
-
-![](docs/preview/1.gif)
-
-> 菜单树切换
-
-![](docs/preview/2.gif)
-
-> 表格浏览
-
-![](docs/preview/3.gif)
-
-> 增删改查
-
-![](docs/preview/4.gif)
-
-> 组织机构
-
-![](docs/preview/5.gif)
-
-> 资源管理
-
-![](docs/preview/6.gif)
-
-> 自适应测试
-
-![](docs/preview/8.gif)
-
-## 代码生成器
-
-已集成通用 Mapper 专用代码生成器Maven插件，使用该插件可以很方便的生成实体类、Mapper接口以及对应的XML文件。
-
-首先对MBG不太了解的可以先阅读下面的文档
-
-[Mybatis Geneator 详解](https://blog.csdn.net/isea533/article/details/42102297)
-
-通用 Mapper 专用代码生成器生成的 Model 会在原有基础上增加 @Table,@Id,@Column 等注解，方便自动会数据库字段进行映射。
-
-运行代码生成器需要使用命令
-
-`mvn mybatis-generator:generate`
-
-
-## 在线访问
-
-### 预览地址
-
-[http://wetech.tech/wetech-admin](http://wetech.tech/wetech-admin "demo")
-
-### 测试用户名密码
-1. admin/123456
-2. guest/123456
-
-## 许可证
-
-Wetech-Admin 使用 MIT 许可证发布，用户可以自由使用、复制、修改、合并、出版发行、散布、再授权及贩售Wetech-Admin 及其副本。
-
-[查看许可证](LICENSE "LICENSE")
-
-## 获取源码
-
- [https://github.com/cjbi/wetech-admin](https://github.com/cjbi/wetech-admin "github")
-
- [https://gitee.com/cjbi/wetech-admin](https://gitee.com/cjbi/wetech-admin "gitee")
-

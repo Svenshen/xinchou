@@ -8,6 +8,7 @@
 package tech.wetech.admin.szh.xinchou.domain;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import lombok.Data;
  */
 @Data
 @Entity
+
 public class Shoujishuju implements Serializable {
     
     @Excel(name = "可售卖产品")
@@ -196,4 +198,7 @@ public class Shoujishuju implements Serializable {
     
     @Column
     String daoruid;
+    
+ 
+    
 }

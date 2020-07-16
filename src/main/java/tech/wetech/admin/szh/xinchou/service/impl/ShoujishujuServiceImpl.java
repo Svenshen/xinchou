@@ -9,14 +9,12 @@ package tech.wetech.admin.szh.xinchou.service.impl;
 
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import tech.wetech.admin.szh.xinchou.dao.ShoujishujuDao;
 import tech.wetech.admin.szh.xinchou.domain.Shoujikehu;
@@ -43,7 +41,13 @@ public class ShoujishujuServiceImpl extends XinchouBaseService<Shoujishuju,Strin
         params.setTitleRows(0);
         params.setHeadRows(1);
         List<Shoujishuju>  listshoujishuju =ExcelImportUtil.importExcel(file.getInputStream(), Shoujishuju.class, params);
-        listshoujishuju.forEach((j) -> {
+        listshoujishuju.forEach((j) -> { 
+            if(j.getYoujianhao() == null || "null".equals(j.getYoujianhao())){
+                    listshoujishuju.remove(j);
+                }
+        });
+        
+        listshoujishuju.forEach((j) -> {            
             j.setShoujijigou(bumen);
             j.setDaoruid(daoruid);
         });
