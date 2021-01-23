@@ -2,7 +2,8 @@
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
 # @autoor szh
-FROM openjdk:8-jdk-alpine
+#FROM openjdk:8-jdk-alpine
+FROM openjdk:11-oraclelinux8
 VOLUME /tmp
 #ARG JAR_FILE
 RUN apk add -U tzdata
@@ -13,8 +14,5 @@ RUN mkdir /app
 COPY app.jar /app/app.jar
 EXPOSE 8080
 ENV LANG=en_US.UTF-8
-<<<<<<< HEAD
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
-=======
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
->>>>>>> refs/remotes/origin/master
+
