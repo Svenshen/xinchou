@@ -13,4 +13,8 @@ RUN mkdir /app
 COPY app.jar /app/app.jar
 EXPOSE 8080
 ENV LANG=en_US.UTF-8
+<<<<<<< HEAD
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
+=======
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
+>>>>>>> refs/remotes/origin/master
