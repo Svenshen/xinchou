@@ -12,6 +12,9 @@ RUN echo "Asia/Shanghai" > /etc/timezone
 #COPY ${JAR_FILE} app.jar
 RUN mkdir /app
 COPY app.jar /app/app.jar
+RUN yum update
+RUN curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+RUN yum install -y nodejs
 EXPOSE 8080
 ENV LANG=en_US.UTF-8
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
