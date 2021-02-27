@@ -119,8 +119,10 @@ VOLUME /tmp
 #RUN apk add -U tzdata
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shanghai" > /etc/timezone && mkdir /app
 #COPY ${JAR_FILE} app.jar
+
 COPY app.jar /app/app.jar
 EXPOSE 8080
-ENV LANG=en_US.UTF-8
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"]
+ENV LANG=C.UTF-8
+workdir /app
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar"]
 
