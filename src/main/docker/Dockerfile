@@ -21,6 +21,7 @@ ENV PATH $JAVA_HOME/bin:$PATH
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
 
+
 # https://adoptopenjdk.net/upstream.html
 # >
 # > What are these binaries?
@@ -123,6 +124,7 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shang
 COPY app.jar /app/app.jar
 EXPOSE 8080
 ENV LANG=C.UTF-8
+ENV JAVA_OPTIONS=
 workdir /app
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar","$JAVA_OPTIONS"]
 
