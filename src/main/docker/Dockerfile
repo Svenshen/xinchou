@@ -126,5 +126,5 @@ EXPOSE 8080
 ENV LANG C.UTF-8
 ENV JAVA_OPTIONS -Xmx1024m
 workdir /app
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar",$JAVA_OPTIONS]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom",$JAVA_OPTIONS,"-jar","app.jar"]
 
