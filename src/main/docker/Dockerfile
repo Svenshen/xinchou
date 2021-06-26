@@ -124,7 +124,6 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo "Asia/Shang
 COPY app.jar /app/app.jar
 EXPOSE 8080
 ENV LANG C.UTF-8
-ENV JAVA_OPTIONS -Xmx1024m
 workdir /app
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom",$JAVA_OPTIONS,"-jar","app.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Xmx4000m","-jar","app.jar"]
 
