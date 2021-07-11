@@ -125,5 +125,5 @@ COPY app.jar /app/app.jar
 EXPOSE 8080
 ENV LANG C.UTF-8
 workdir /app
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar","-xmx 5000m"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","app.jar","-Xmx5000m"]
 
